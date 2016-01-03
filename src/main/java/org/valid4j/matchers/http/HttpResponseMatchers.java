@@ -1,13 +1,12 @@
 package org.valid4j.matchers.http;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
+import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.describedAs;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -84,25 +83,19 @@ public class HttpResponseMatchers {
     }
 
     public static Matcher<Response> hasEntity() {
-        return new TypeSafeMatcher<Response>() {
-            public void describeTo(Description description) {
-                description.appendText("has entity");
-            }
+        return new HasEntityMatcher();
+    }
 
-            @Override
-            protected boolean matchesSafely(Response response) {
-                return response.hasEntity();
-            }
+    public static Matcher<Response> ofLanguage(final String languageTag) {
+        return ofLanguage(equalTo(Locale.forLanguageTag(languageTag)));
+    }
 
-            @Override
-            protected void describeMismatchSafely(Response response, Description mismatchDescription) {
-                if (response.hasEntity()) {
-                    mismatchDescription.appendText("has entity");
-                } else {
-                    mismatchDescription.appendText("has no entity");
-                }
-            }
-        };
+    public static Matcher<Response> ofLanguage(final Locale locale) {
+        return ofLanguage(equalTo(locale));
+    }
+
+    public static Matcher<Response> ofLanguage(final Matcher<? extends Locale> localeMatcher) {
+        return new OfLanguageMatcher(localeMatcher);
     }
 
 }

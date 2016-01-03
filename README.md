@@ -42,6 +42,11 @@ Example usage:
     assertThat(response, hasHeader("some-int-header", equalTo(42)));
     assertThat(response, hasHeaderValues("some-headers", hasItem(equalTo("some-value"))));
     
+    // Verify language of response
+    assertThat(response, ofLanguage("en-GB"));
+    assertThat(response, ofLanguage(Locale.UK));
+    assertThat(response, ofLanguage(equalTo(Locale.UK)));
+
     ...
     
     

@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
+import java.util.Locale;
 
 import static javax.ws.rs.core.MediaType.*;
 import static javax.ws.rs.core.Response.Status.*;
@@ -179,11 +180,30 @@ public class HttpResponseMatchersTest {
                 equalTo("has no entity"));
     }
 
-    public void shouldMatchByEntity() {
+    public void shouldMatchByEntityWithValue() {
     }
 
+    @Test
     public void shouldMatchByLanguage() {
-        // Locale
+        Response response = Response.ok("message").language(Locale.UK).build();
+        assertThat(response, ofLanguage("en-GB"));
+        assertThat(response, ofLanguage(Locale.UK));
+        assertThat(response, ofLanguage(equalTo(Locale.UK)));
+        assertThat(response, not(ofLanguage("en-US")));
+        assertThat(response, not(ofLanguage(Locale.US)));
+        assertThat(response, not(ofLanguage(equalTo(Locale.US))));
+        assertThat(ofLanguage("en-CA"),
+                isDescribedBy("of language <en_CA>"));
+        assertThat(mismatchOf(response, ofLanguage("en-CA")),
+                equalTo("was language \"en-GB\""));
+    }
+
+    public void shouldMatchByDate() {
+
+    }
+
+    public void shouldMatchByExpiry() {
+
     }
 
     public void shouldMatchByLastModified() {
