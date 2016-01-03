@@ -34,6 +34,13 @@ Example usage:
     
     // Verify content type of response
     assertThat(response, hasContentType(MediaType.APPLICATION_JSON_TYPE));
+    assertThat(response, hasContentType(isCompatibleWith(MediaType.APPLICATION_JSON_TYPE)));
+    
+    // Verify headers of response
+    assertThat(response, hasHeader("some-header"));
+    assertThat(response, hasHeader("some-string-header", equalTo("some-value")));
+    assertThat(response, hasHeader("some-int-header", equalTo(42)));
+    assertThat(response, hasHeaderValues("some-headers", hasItem(equalTo("some-value"))));
     
     ...
     
