@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
+import java.util.Date;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.describedAs;
@@ -96,6 +97,10 @@ public class HttpResponseMatchers {
 
     public static Matcher<Response> ofLanguage(final Matcher<? extends Locale> localeMatcher) {
         return new OfLanguageMatcher(localeMatcher);
+    }
+
+    public static Matcher<Response> withLastModifiedDate(final Matcher<? extends Date> lastModDateMatcher) {
+        return new WithLastModifiedDateMatcher(lastModDateMatcher);
     }
 
 }

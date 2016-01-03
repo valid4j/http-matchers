@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
+import java.util.Date;
 import java.util.Locale;
 
 import static javax.ws.rs.core.MediaType.*;
@@ -169,14 +170,24 @@ public class HttpResponseMatchersTest {
         assertThat(response, not(hasCookie("cookie3")));
     }
 
+    public void shouldMatchByCookieWithValue() {
+
+    }
+
     @Test
     public void shouldMatchByHasEntity() {
         Response response = Response.ok("entity").build();
         assertThat(response, hasEntity());
-        assertThat(hasEntity(),
-                isDescribedBy("has entity"));
-        Response responseWithNoEntity = Response.ok().build();
-        assertThat(mismatchOf(responseWithNoEntity, hasEntity()),
+        assertThat(hasEntity(), isDescribedBy("has entity"));
+        assertThat(mismatchOf(response, hasEntity()),
+                equalTo("has entity"));
+    }
+
+    @Test
+    public void shouldMatchByHasNoEntity() {
+        Response response = Response.noContent().build();
+        assertThat(response, not(hasEntity()));
+        assertThat(mismatchOf(response, hasEntity()),
                 equalTo("has no entity"));
     }
 
@@ -198,15 +209,12 @@ public class HttpResponseMatchersTest {
                 equalTo("was language \"en-GB\""));
     }
 
-    public void shouldMatchByDate() {
-
-    }
-
-    public void shouldMatchByExpiry() {
-
-    }
-
+    @Test
     public void shouldMatchByLastModified() {
+        Date lastModDate = new Date();
+        Response response = Response.ok().lastModified(lastModDate).build();
+        assertThat(response, withLastModifiedDate(equalTo(lastModDate)));
+
     }
 
     public void shouldMatchByContentLength() {
