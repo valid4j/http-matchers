@@ -2,10 +2,7 @@ package org.valid4j.matchers.http;
 
 import org.junit.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
 
@@ -159,10 +156,27 @@ public class HttpResponseMatchersTest {
                 equalTo("header \"some-other-key\" was missing"));
     }
 
+    @Test
     public void shouldMatchByCookie() {
+        Response response = Response.ok().cookie(
+                new NewCookie("cookie1", "my-value"),
+                new NewCookie("cookie1", "my-other-value"),
+                new NewCookie("cookie1", "my-yet-another-value"),
+                new NewCookie("cookie2", "my-value-2")).build();
+        assertThat(response, hasCookie("cookie1"));
+        assertThat(response, hasCookie("cookie2"));
+        assertThat(response, not(hasCookie("cookie3")));
     }
 
+    @Test
     public void shouldMatchByHasEntity() {
+        Response response = Response.ok("entity").build();
+        assertThat(response, hasEntity());
+        assertThat(hasEntity(),
+                isDescribedBy("has entity"));
+        Response responseWithNoEntity = Response.ok().build();
+        assertThat(mismatchOf(responseWithNoEntity, hasEntity()),
+                equalTo("has no entity"));
     }
 
     public void shouldMatchByEntity() {

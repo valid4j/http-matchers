@@ -1,6 +1,8 @@
 package org.valid4j.matchers.http;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -75,6 +77,32 @@ public class HttpResponseMatchers {
             final String headerName,
             final Matcher<? extends Iterable<?>> valuesMatcher) {
         return new HasHeaderWithValuesMatcher(headerName, valuesMatcher);
+    }
+
+    public static Matcher<Response> hasCookie(final String cookieName) {
+        return new HasCookieMatcher(cookieName);
+    }
+
+    public static Matcher<Response> hasEntity() {
+        return new TypeSafeMatcher<Response>() {
+            public void describeTo(Description description) {
+                description.appendText("has entity");
+            }
+
+            @Override
+            protected boolean matchesSafely(Response response) {
+                return response.hasEntity();
+            }
+
+            @Override
+            protected void describeMismatchSafely(Response response, Description mismatchDescription) {
+                if (response.hasEntity()) {
+                    mismatchDescription.appendText("has entity");
+                } else {
+                    mismatchDescription.appendText("has no entity");
+                }
+            }
+        };
     }
 
 }
