@@ -1,27 +1,27 @@
 package org.valid4j.matchers.http;
 
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Objects;
 
 class HasContentTypeMatcher extends TypeSafeMatcher<Response> {
-    private final MediaType mediaType;
+    private final Matcher<? extends MediaType> mediaTypeMatcher;
 
-    public HasContentTypeMatcher(MediaType mediaType) {
-        this.mediaType = mediaType;
+    public HasContentTypeMatcher(Matcher<? extends MediaType> mediaTypeMatcher) {
+        this.mediaTypeMatcher = mediaTypeMatcher;
     }
 
     public void describeTo(Description description) {
-        description.appendText("has content type ").appendValue(mediaType);
+        description.appendText("has content type ").appendDescriptionOf(mediaTypeMatcher);
     }
 
     @Override
     protected boolean matchesSafely(Response response) {
         MediaType actual = response.getMediaType();
-        return Objects.equals(actual, mediaType);
+        return mediaTypeMatcher.matches(actual);
     }
 
     @Override

@@ -10,9 +10,9 @@ import java.util.List;
 
 class HasHeaderWithValuesMatcher extends TypeSafeDiagnosingMatcher<Response> {
     private final String headerName;
-    private final Matcher<? super Iterable<? super Object>> valuesMatcher;
+    private final Matcher<? extends Iterable<?>> valuesMatcher;
 
-    public HasHeaderWithValuesMatcher(String headerName, Matcher<? super Iterable<? super Object>> valuesMatcher) {
+    public HasHeaderWithValuesMatcher(String headerName, Matcher<? extends Iterable<?>> valuesMatcher) {
         this.headerName = headerName;
         this.valuesMatcher = valuesMatcher;
     }

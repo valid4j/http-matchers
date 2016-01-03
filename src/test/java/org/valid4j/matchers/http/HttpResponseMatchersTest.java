@@ -2,6 +2,7 @@ package org.valid4j.matchers.http;
 
 import org.junit.Test;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -18,6 +19,7 @@ import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
 public class HttpResponseMatchersTest {
+    private static final MediaType TEXT_WILDCARD = new MediaType("text", MEDIA_TYPE_WILDCARD);
 
     @Test
     public void shouldMatchOkResponse() {
@@ -94,6 +96,7 @@ public class HttpResponseMatchersTest {
         Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
         assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
         assertThat(response, hasContentType(TEXT_PLAIN));
+        assertThat(response, hasContentType(isCompatibleWith(TEXT_WILDCARD)));
         assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
         assertThat(response, not(hasContentType(APPLICATION_JSON)));
         assertThat(hasContentType(TEXT_PLAIN_TYPE),
