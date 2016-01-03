@@ -2,6 +2,8 @@ package org.valid4j.matchers.http;
 
 import org.junit.Test;
 
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
@@ -87,8 +89,71 @@ public class HttpResponseMatchersTest {
         assertThat(response, hasStatus(new HttpStatus(200, "OK")));
     }
 
-    // TODO:
+    @Test
+    public void shouldMatchByContentType() {
+        Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
+        assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
+        assertThat(response, hasContentType(TEXT_PLAIN));
+        assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
+        assertThat(response, not(hasContentType(APPLICATION_JSON)));
+        assertThat(hasContentType(TEXT_PLAIN_TYPE),
+                isDescribedBy("has content type <text/plain>"));
+        Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
+        assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
+                equalTo("was content type <application/json>"));
+    }
+
+    @Test
     public void shouldMatchByHeader() {
+        Response response = Response.ok().header("some-key", "some-value").build();
+        assertThat(response, hasHeader("some-key"));
+        assertThat(response, not(hasHeader("some-other-key")));
+        assertThat(hasHeader("some-key"),
+                isDescribedBy("has header \"some-key\""));
+        assertThat(mismatchOf(response, hasHeader("some-other-key")),
+                equalTo("header \"some-other-key\" was missing"));
+    }
+
+    @Test
+    public void shouldMatchByHeaderWithValue() {
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
+        headers.add("some-key", "some-value");
+        headers.add("some-key", "some-value2");
+        headers.add("some-key", "some-value3");
+        headers.add("some-key2", 42);
+        Response response = Response.ok().replaceAll(headers).build();
+        assertThat(response, hasHeader("some-key", equalTo("some-value")));
+        assertThat(response, hasHeader("some-key2", equalTo(42)));
+        assertThat(response, not(hasHeader("some-key", equalTo("some-value2"))));
+        assertThat(response, not(hasHeader("some-key2", hasItem(equalTo(53)))));
+        assertThat(response, not(hasHeader("some-key3", hasItem(equalTo(0)))));
+        assertThat(hasHeader("some-key", equalTo("some-value")),
+                isDescribedBy("has header \"some-key\" with value \"some-value\""));
+        assertThat(mismatchOf(response, hasHeader("some-other-key", equalTo("some-value"))),
+                equalTo("header \"some-other-key\" was missing"));
+        assertThat(mismatchOf(response, hasHeader("some-key", equalTo("some-other-value"))),
+                equalTo("header \"some-key\" contained \"some-value\""));
+    }
+
+    @Test
+    public void shouldMatchByHeaderWithValues() {
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
+        headers.add("some-key", "some-value");
+        headers.add("some-key", "some-value2");
+        headers.add("some-key", "some-value3");
+        headers.add("some-key2", 42);
+        Response response = Response.ok().replaceAll(headers).build();
+        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value"))));
+        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value2"))));
+        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value3"))));
+        assertThat(response, hasHeaderValues("some-key2", hasItem(equalTo(42))));
+        assertThat(response, not(hasHeaderValues("some-key", hasItem(equalTo("some-other-value")))));
+        assertThat(response, not(hasHeaderValues("some-key2", hasItem(equalTo(53)))));
+        assertThat(response, not(hasHeaderValues("some-key3", hasItem(equalTo(0)))));
+        assertThat(hasHeaderValues("some-key", hasItem(equalTo("some-value"))),
+                isDescribedBy("has header \"some-key\" with a collection containing \"some-value\""));
+        assertThat(mismatchOf(response, hasHeaderValues("some-other-key", hasItem(equalTo("some-value")))),
+                equalTo("header \"some-other-key\" was missing"));
     }
 
     public void shouldMatchByCookie() {
@@ -117,20 +182,6 @@ public class HttpResponseMatchersTest {
     }
 
     public void shouldMatchByLocation() {
-    }
-
-    @Test
-    public void shouldMatchByMediaType() {
-        Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
-        assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
-        assertThat(response, hasContentType(TEXT_PLAIN));
-        assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
-        assertThat(response, not(hasContentType(APPLICATION_JSON)));
-        assertThat(hasContentType(TEXT_PLAIN_TYPE),
-                isDescribedBy("has content type <text/plain>"));
-        Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
-        assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
-                equalTo("was content type <application/json>"));
     }
 
     private static Response response(StatusType status) {

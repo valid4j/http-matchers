@@ -5,9 +5,11 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
+import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.describedAs;
@@ -118,6 +120,106 @@ public class HttpResponseMatchers {
                 description.appendText("has content type ").appendValue(mediaType);
             }
 
+        };
+    }
+
+    public static Matcher<? super Response> hasHeader(final String headerName) {
+        return new TypeSafeDiagnosingMatcher<Response>() {
+            @Override
+            protected boolean matchesSafely(Response response, Description mismatchDescription) {
+                MultivaluedMap<String, Object> headers = response.getHeaders();
+                if (headers.containsKey(headerName)) {
+                    return true;
+                } else {
+                    mismatchDescription
+                            .appendText("header ")
+                            .appendValue(headerName)
+                            .appendText(" was missing");
+                    return false;
+                }
+            }
+
+            public void describeTo(Description description) {
+                description
+                        .appendText("has header ")
+                        .appendValue(headerName);
+            }
+        };
+    }
+
+    public static Matcher<? super Response> hasHeader(
+            final String headerName,
+            final Matcher<? extends Object> valueMatcher) {
+        return new TypeSafeDiagnosingMatcher<Response>() {
+            @Override
+            protected boolean matchesSafely(Response response, Description mismatchDescription) {
+                MultivaluedMap<String, Object> headers = response.getHeaders();
+                if (headers.containsKey(headerName)) {
+                    Object value = headers.getFirst(headerName);
+                    if (!valueMatcher.matches(value)) {
+                        mismatchDescription
+                                .appendText("header ")
+                                .appendValue(headerName)
+                                .appendText(" contained ")
+                                .appendValue(value);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    mismatchDescription
+                            .appendText("header ")
+                            .appendValue(headerName)
+                            .appendText(" was missing");
+                    return false;
+                }
+            }
+
+            public void describeTo(Description description) {
+                description
+                        .appendText("has header ")
+                        .appendValue(headerName)
+                        .appendText(" with value ")
+                        .appendDescriptionOf(valueMatcher);
+            }
+        };
+    }
+
+    public static Matcher<? super Response> hasHeaderValues(
+            final String headerName,
+            final Matcher<? super Iterable<? super Object>> valuesMatcher) {
+        return new TypeSafeDiagnosingMatcher<Response>() {
+            @Override
+            protected boolean matchesSafely(Response response, Description mismatchDescription) {
+                MultivaluedMap<String, Object> headers = response.getHeaders();
+                if (headers.containsKey(headerName)) {
+                    List<Object> values = headers.get(headerName);
+                    if (!valuesMatcher.matches(values)) {
+                        mismatchDescription
+                                .appendText("header ")
+                                .appendValue(headerName)
+                                .appendText(" contained ")
+                                .appendValueList("", ",", "", values);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    mismatchDescription
+                            .appendText("header ")
+                            .appendValue(headerName)
+                            .appendText(" was missing");
+                    return false;
+                }
+            }
+
+            public void describeTo(Description description) {
+                description
+                        .appendText("has header ")
+                        .appendValue(headerName)
+                        .appendText(" with ")
+                        .appendDescriptionOf(valuesMatcher);
+            }
         };
     }
 
