@@ -25,24 +25,21 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
             <version>2.22.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- For the client driver -->
         <dependency>
             <groupId>com.github.rest-driver</groupId>
             <artifactId>rest-client-driver</artifactId>
-            <version>1.1.41</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- For the server driver -->
-        <dependency>
-            <groupId>com.github.rest-driver</groupId>
-            <artifactId>rest-server-driver</artifactId>
-            <version>1.1.41</version>
+            <version>1.1.43</version>
             <scope>test</scope>
         </dependency>
         <dependency>

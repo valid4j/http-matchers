@@ -191,9 +191,6 @@ public class HttpResponseMatchersTest {
                 equalTo("has no entity"));
     }
 
-    public void shouldMatchByEntityWithValue() {
-    }
-
     @Test
     public void shouldMatchByLanguage() {
         Response response = Response.ok("message").language(Locale.UK).build();

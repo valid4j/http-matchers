@@ -87,6 +87,10 @@ public class HttpResponseMatchers {
         return new HasEntityMatcher();
     }
 
+    public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? extends T> entityMatcher) {
+        return new HasEntityWithValueMatcher(entityClass, entityMatcher);
+    }
+
     public static Matcher<Response> ofLanguage(final String languageTag) {
         return ofLanguage(equalTo(Locale.forLanguageTag(languageTag)));
     }
