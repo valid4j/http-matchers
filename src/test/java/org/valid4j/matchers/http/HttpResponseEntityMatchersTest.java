@@ -14,6 +14,7 @@ import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.valid4j.matchers.http.HttpResponseMatchers.hasEntity;
+import static org.valid4j.matchers.http.HttpResponseMatchers.withContentLength;
 import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
@@ -37,5 +38,17 @@ public class HttpResponseEntityMatchersTest {
                 equalTo("entity = \"payload\""));
     }
 
+    @Test
+    public void shouldMatchByContentLength() {
+        service.addExpectation(
+                onRequestTo("/"),
+                giveResponse("some-content-as-payload", MediaType.TEXT_PLAIN).withStatus(200));
 
+        Response response = client.target(service.getBaseUrl()).request().get();
+        assertThat(response, withContentLength(equalTo(23)));
+        assertThat(withContentLength(equalTo(7)),
+                isDescribedBy("with Content-Length <7>"));
+        assertThat(mismatchOf(response, withContentLength(equalTo(0))),
+                equalTo("Content-Length <23>"));
+    }
 }

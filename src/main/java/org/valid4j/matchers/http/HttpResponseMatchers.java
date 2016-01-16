@@ -107,4 +107,8 @@ public class HttpResponseMatchers {
         return new WithLastModifiedDateMatcher(lastModDateMatcher);
     }
 
+    public static Matcher<Response> withContentLength(final Matcher<? extends Integer> lengthMatcher) {
+        return new WithContentLengthMatcher(lengthMatcher);
+    }
+
 }
