@@ -215,7 +215,7 @@ public class HttpResponseMatchersTest {
         assertThat(withLastModifiedDate(equalTo(lastModDate)),
                 isDescribedBy("with last modified date <Sat Jan 16 17:03:14 CET 2016>"));
         assertThat(mismatchOf(response, withLastModifiedDate(equalTo(new Date(0L)))),
-                equalTo("last modified date was = <Sat Jan 16 17:03:14 CET 2016>"));
+                equalTo("last modified date was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 
     public void shouldMatchByHasLink() {
