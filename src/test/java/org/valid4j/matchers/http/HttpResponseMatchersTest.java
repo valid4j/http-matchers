@@ -171,6 +171,7 @@ public class HttpResponseMatchersTest {
         assertThat(response, not(hasCookie("cookie3")));
     }
 
+    // TODO:
     public void shouldMatchByCookieWithValue() {
 
     }
@@ -219,9 +220,11 @@ public class HttpResponseMatchersTest {
                 equalTo("last modified date was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 
+    // TODO:
     public void shouldMatchByHasLink() {
     }
 
+    // TODO:
     public void shouldMatchByLinkByRelation() {
     }
 
