@@ -78,6 +78,7 @@ public class HttpResponseMatchersTest {
     public void shouldMatchByStatusCodeAndReason() {
         Response response = response(ACCEPTED);
         assertThat(response, hasStatus(ACCEPTED));
+        assertThat(response, hasStatus(202, "Accepted"));
         assertThat(hasStatus(ACCEPTED),
                 isDescribedBy("has status <202 - Accepted>"));
         assertThat(mismatchOf(response(BAD_GATEWAY), hasStatus(ACCEPTED)),
@@ -87,8 +88,11 @@ public class HttpResponseMatchersTest {
     @Test
     public void shouldNotMatchByStatusCodeAndReason() {
         Response response = response(OK);
+        assertThat(response, not(hasStatus(200, "Mismatched Reason")));
         assertThat(response, not(hasStatus(new HttpStatus(200, "Mismatched Reason"))));
+        assertThat(response, not(hasStatus(201, "OK")));
         assertThat(response, not(hasStatus(new HttpStatus(201, "OK"))));
+        assertThat(response, hasStatus(200, "OK"));
         assertThat(response, hasStatus(new HttpStatus(200, "OK")));
     }
 

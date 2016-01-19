@@ -43,6 +43,10 @@ public class HttpResponseMatchers {
         return new HasStatusMatcher(status);
     }
 
+    public static Matcher<Response> hasStatus(final int statusCode, final String reason) {
+        return new HasStatusMatcher(statusCode, reason);
+    }
+
     public static Matcher<Integer> ofFamily(final Family family) {
         return new OfFamilyMatcher(family);
     }
