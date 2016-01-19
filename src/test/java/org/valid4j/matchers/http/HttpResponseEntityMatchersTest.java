@@ -32,6 +32,7 @@ public class HttpResponseEntityMatchersTest {
 
         Response response = client.target(service.getBaseUrl()).request().get();
         assertThat(response, hasEntity(String.class, equalTo("payload")));
+        assertThat(response, hasEntity(equalTo("payload")));
         assertThat(hasEntity(String.class, equalTo("payload")),
                 isDescribedBy("has entity \"payload\""));
         assertThat(mismatchOf(response, hasEntity(String.class, equalTo("some-other"))),

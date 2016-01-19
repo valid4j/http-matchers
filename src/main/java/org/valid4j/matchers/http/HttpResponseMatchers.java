@@ -91,6 +91,10 @@ public class HttpResponseMatchers {
         return new HasEntityMatcher();
     }
 
+    public static <T> Matcher<Response> hasEntity(Matcher<String> entityMatcher) {
+        return new HasEntityWithValueMatcher(String.class, entityMatcher);
+    }
+
     public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? extends T> entityMatcher) {
         return new HasEntityWithValueMatcher(entityClass, entityMatcher);
     }
