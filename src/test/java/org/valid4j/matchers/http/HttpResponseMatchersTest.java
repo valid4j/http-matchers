@@ -1,6 +1,7 @@
 package org.valid4j.matchers.http;
 
 import org.junit.Test;
+import org.valid4j.matchers.http.helpers.HttpStatus;
 
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;

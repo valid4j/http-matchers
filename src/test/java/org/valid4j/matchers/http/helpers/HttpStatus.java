@@ -1,4 +1,4 @@
-package org.valid4j.matchers.http;
+package org.valid4j.matchers.http.helpers;
 
 import javax.ws.rs.core.Response;
 

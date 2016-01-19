@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response;
  * A class to decorate a {@link javax.ws.rs.core.Response.StatusType}
  * with a more descriptive {@link Object#toString()}
  */
-public class HttpDescriptiveStatus implements Response.StatusType {
+class HttpDescriptiveStatus implements Response.StatusType {
     private final Response.StatusType status;
 
     public HttpDescriptiveStatus(Response.StatusType status) {
