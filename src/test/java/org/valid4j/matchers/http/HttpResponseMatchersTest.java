@@ -212,10 +212,10 @@ public class HttpResponseMatchersTest {
         final long lastModMillis = 1452960194707L;
         Date lastModDate = new Date(lastModMillis);
         Response response = Response.ok().lastModified(lastModDate).build();
-        assertThat(response, withLastModifiedDate(equalTo(lastModDate)));
-        assertThat(withLastModifiedDate(equalTo(lastModDate)),
-                isDescribedBy("with last modified date <Sat Jan 16 17:03:14 CET 2016>"));
-        assertThat(mismatchOf(response, withLastModifiedDate(equalTo(new Date(0L)))),
+        assertThat(response, hasLastModifiedDate(equalTo(lastModDate)));
+        assertThat(hasLastModifiedDate(equalTo(lastModDate)),
+                isDescribedBy("has last modified date <Sat Jan 16 17:03:14 CET 2016>"));
+        assertThat(mismatchOf(response, hasLastModifiedDate(equalTo(new Date(0L)))),
                 equalTo("last modified date was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 

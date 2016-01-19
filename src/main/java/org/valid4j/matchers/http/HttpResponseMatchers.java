@@ -104,8 +104,8 @@ public class HttpResponseMatchers {
         return new OfLanguageMatcher(localeMatcher);
     }
 
-    public static Matcher<Response> withLastModifiedDate(final Matcher<? extends Date> lastModDateMatcher) {
-        return new WithLastModifiedDateMatcher(lastModDateMatcher);
+    public static Matcher<Response> hasLastModifiedDate(final Matcher<? extends Date> lastModDateMatcher) {
+        return new HasLastModifiedDate(lastModDateMatcher);
     }
 
     public static Matcher<Response> withContentLength(final Matcher<? extends Integer> lengthMatcher) {

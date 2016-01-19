@@ -7,15 +7,15 @@ import org.hamcrest.TypeSafeMatcher;
 import javax.ws.rs.core.Response;
 import java.util.Date;
 
-class WithLastModifiedDateMatcher extends TypeSafeMatcher<Response> {
+class HasLastModifiedDate extends TypeSafeMatcher<Response> {
     private final Matcher<? extends Date> lastModDateMatcher;
 
-    public WithLastModifiedDateMatcher(Matcher<? extends Date> lastModDateMatcher) {
+    public HasLastModifiedDate(Matcher<? extends Date> lastModDateMatcher) {
         this.lastModDateMatcher = lastModDateMatcher;
     }
 
     public void describeTo(Description description) {
-        description.appendText("with last modified date ").appendDescriptionOf(lastModDateMatcher);
+        description.appendText("has last modified date ").appendDescriptionOf(lastModDateMatcher);
     }
 
     @Override
