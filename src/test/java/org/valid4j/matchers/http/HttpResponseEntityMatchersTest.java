@@ -49,6 +49,6 @@ public class HttpResponseEntityMatchersTest {
         assertThat(hasContentLength(equalTo(7)),
                 isDescribedBy("has Content-Length <7>"));
         assertThat(mismatchOf(response, hasContentLength(equalTo(0))),
-                equalTo("Content-Length <23>"));
+                equalTo("Content-Length was <23>"));
     }
 }

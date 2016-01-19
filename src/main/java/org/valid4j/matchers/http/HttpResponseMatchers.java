@@ -111,7 +111,7 @@ public class HttpResponseMatchers {
         return new HasLastModifiedDate(lastModDateMatcher);
     }
 
-    public static Matcher<Response> hasContentLength(final Matcher<? extends Integer> lengthMatcher) {
+    public static Matcher<Response> hasContentLength(final Matcher<? super Integer> lengthMatcher) {
         return new HasContentLengthMatcher(lengthMatcher);
     }
 
