@@ -60,7 +60,7 @@ public class HttpResponseMatchers {
         return new HasContentTypeMatcher(mediaTypeMatcher);
     }
 
-    public static Matcher<MediaType> isCompatibleWith(final MediaType compatibleMediaType) {
+    public static Matcher<MediaType> compatibleWith(final MediaType compatibleMediaType) {
         return new MediaTypeCompatibleWithMatcher(compatibleMediaType);
     }
 

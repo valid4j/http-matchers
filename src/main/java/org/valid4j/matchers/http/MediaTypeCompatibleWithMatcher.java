@@ -13,7 +13,7 @@ class MediaTypeCompatibleWithMatcher extends TypeSafeMatcher<MediaType> {
     }
 
     public void describeTo(Description description) {
-        description.appendText("is compatible with ").appendValue(compatibleMediaType);
+        description.appendText("compatible with ").appendValue(compatibleMediaType);
     }
 
     @Override

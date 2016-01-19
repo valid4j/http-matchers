@@ -96,7 +96,7 @@ public class HttpResponseMatchersTest {
         Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
         assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
         assertThat(response, hasContentType(TEXT_PLAIN));
-        assertThat(response, hasContentType(isCompatibleWith(TEXT_WILDCARD)));
+        assertThat(response, hasContentType(compatibleWith(TEXT_WILDCARD)));
         assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
         assertThat(response, not(hasContentType(APPLICATION_JSON)));
         assertThat(hasContentType(TEXT_PLAIN_TYPE),
