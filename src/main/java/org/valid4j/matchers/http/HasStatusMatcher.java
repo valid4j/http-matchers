@@ -10,7 +10,7 @@ class HasStatusMatcher extends TypeSafeMatcher<Response> {
     private final Response.StatusType status;
 
     public HasStatusMatcher(Response.StatusType status) {
-        this.status = status;
+        this.status = new HttpDescriptiveStatus(status);
     }
 
     public void describeTo(Description description) {

@@ -39,8 +39,7 @@ public class HttpResponseMatchers {
         return new HasStatusCodeMatcher(statusCodeMatcher);
     }
 
-    public static Matcher<Response> hasStatus(final StatusType expected) {
-        final StatusType status = new HttpDescriptiveStatus(expected);
+    public static Matcher<Response> hasStatus(final StatusType status) {
         return new HasStatusMatcher(status);
     }
 
