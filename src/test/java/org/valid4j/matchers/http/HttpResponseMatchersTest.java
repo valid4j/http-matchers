@@ -5,6 +5,7 @@ import org.junit.Test;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.StatusType;
+import java.net.URI;
 import java.util.Date;
 import java.util.Locale;
 
@@ -224,7 +225,16 @@ public class HttpResponseMatchersTest {
     public void shouldMatchByLinkByRelation() {
     }
 
+    @Test
     public void shouldMatchByLocation() {
+        URI location = URI.create("http://example.com/loco");
+        Response response = Response.created(location).build();
+        assertThat(response, withLocation(equalTo(location)));
+        assertThat(withLocation(equalTo(location)),
+                isDescribedBy("with Location: <http://example.com/loco>"));
+        URI mismatched = URI.create("http://mismatched.com");
+        assertThat(mismatchOf(response, withLocation(equalTo(mismatched))),
+                equalTo("Location: <http://example.com/loco>"));
     }
 
     private static Response response(StatusType status) {

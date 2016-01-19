@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
+import java.net.URI;
 import java.util.Date;
 import java.util.Locale;
 
@@ -111,4 +112,7 @@ public class HttpResponseMatchers {
         return new WithContentLengthMatcher(lengthMatcher);
     }
 
+    public static Matcher<Response> withLocation(final Matcher<? extends URI> uriMatcher) {
+        return new WithLocation(uriMatcher);
+    }
 }
