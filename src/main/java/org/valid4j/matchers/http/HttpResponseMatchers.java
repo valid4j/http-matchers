@@ -108,8 +108,8 @@ public class HttpResponseMatchers {
         return new HasLastModifiedDate(lastModDateMatcher);
     }
 
-    public static Matcher<Response> withContentLength(final Matcher<? extends Integer> lengthMatcher) {
-        return new WithContentLengthMatcher(lengthMatcher);
+    public static Matcher<Response> hasContentLength(final Matcher<? extends Integer> lengthMatcher) {
+        return new HasContentLengthMatcher(lengthMatcher);
     }
 
     public static Matcher<Response> withLocation(final Matcher<? extends URI> uriMatcher) {
