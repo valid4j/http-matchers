@@ -10,6 +10,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
+    <url>https://github.com/valid4j/http-matchers</url>
     <description>A set of hamcrest-matchers for JAX-RS</description>
     <inceptionYear>2016</inceptionYear>
 
