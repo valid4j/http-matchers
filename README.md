@@ -31,21 +31,42 @@ Example usage:
 
     // Verify status code and reason of response
     assertThat(response, hasStatus(Status.OK));
+    assertThat(response, hasStatus(400, "Bad Request");
     
     // Verify content type of response
     assertThat(response, hasContentType(MediaType.APPLICATION_JSON_TYPE));
-    assertThat(response, hasContentType(isCompatibleWith(MediaType.APPLICATION_JSON_TYPE)));
+    assertThat(response, hasContentType(compatibleWith(MediaType.APPLICATION_JSON_TYPE)));
     
-    // Verify headers of response
-    assertThat(response, hasHeader("some-header"));
-    assertThat(response, hasHeader("some-string-header", equalTo("some-value")));
-    assertThat(response, hasHeader("some-int-header", equalTo(42)));
-    assertThat(response, hasHeaderValues("some-headers", hasItem(equalTo("some-value"))));
+    // Verify headers of response (by-existence, by-value, by-iterable)
+    assertThat(response, hasHeader("Expires"));
+    assertThat(response, hasHeader("Content-Encoding", equalTo("gzip")));
+    assertThat(response, hasHeader("Age", equalTo(42)));
+    assertThat(response, hasHeaderValues("Cache-Control",
+                contains(equalTo("no-cache"), equalTo("no-store"))));
+
+    // Verify the existence of a message body in the response
+    assertThat(response, hasEntity());
+
+    // Verify the message body content (aka entity) of the response
+    // NOTE: This will buffer the entity so make sure to close the response
+    assertThat(response, hasEntity(equalTo("content")));
+    
+    // Map the body to a specific Java type (using a MessageBodyReader)
+    // E.g
+    assertThat(response, hasEntity(String.class, equalTo("...")));
+    assertThat(response, hasEntity(MyBody.class, myBodyMatcher)));
+    
+    // Verify content length of response
+    assertThat(response, hasContentLength(lessThan(2345)));
     
     // Verify language of response
     assertThat(response, ofLanguage("en-GB"));
     assertThat(response, ofLanguage(Locale.UK));
     assertThat(response, ofLanguage(equalTo(Locale.UK)));
+
+    // Verify location of the response
+    URI location = URI.create("http://example.com/123");
+    assertThat(response, hasLocation(equalTo(location)));
 
     ...
     
