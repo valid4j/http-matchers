@@ -20,7 +20,7 @@ Example usage:
     // Statically import the library entry point:
     import static org.valid4j.matchers.http.HttpResponseMatchers.*;
     
-    // Invoke your web service using plain 
+    // Invoke your web service using plain JAX-RS. E.g:
     Client client = ClientBuilder.newClient();
     Response response = client.target("http://example.org/hello").request("text/plain").get();
     
