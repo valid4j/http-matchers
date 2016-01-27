@@ -4,6 +4,15 @@ http-matchers
 A set of [hamcrest-matchers](http://hamcrest.org/JavaHamcrest/) to test 
 your web services via the standard [Java API for RESTful Services (JAX-RS)](https://jax-rs-spec.java.net/)
 
+This library is available at [Maven Central Repository](http://search.maven.org/).
+Add this dependency to your `pom.xml`
+
+    <dependency>
+	    <groupId>org.valid4j</groupId>
+	    <artifactId>http-matchers</artifactId>
+	    <version>1.0</version>
+    </dependency>
+
 The [JAX-RS client API (javax.ws.rs.client)](https://docs.oracle.com/javaee/7/api/index.html?javax/ws/rs/client/package-summary.html)
 can be downloaded from here, but is usually bundled with the client implementation you are using, e.g Jersey.
 
@@ -13,7 +22,7 @@ can be downloaded from here, but is usually bundled with the client implementati
 	    <version>2.0.1</version>
     </dependency>
 
-### Usage guide
+## Usage guide
 
 Example usage:
 
@@ -70,4 +79,6 @@ Example usage:
 
     ...
     
-    
+## Project license
+
+This software is licensed under [Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt)
