@@ -9,9 +9,9 @@ import javax.ws.rs.core.Response;
 
 class HasHeaderWithValueMatcher extends TypeSafeDiagnosingMatcher<Response> {
     private final String headerName;
-    private final Matcher<? extends Object> valueMatcher;
+    private final Matcher<?> valueMatcher;
 
-    public HasHeaderWithValueMatcher(String headerName, Matcher<? extends Object> valueMatcher) {
+    public HasHeaderWithValueMatcher(String headerName, Matcher<?> valueMatcher) {
         this.headerName = headerName;
         this.valueMatcher = valueMatcher;
     }
@@ -25,7 +25,7 @@ class HasHeaderWithValueMatcher extends TypeSafeDiagnosingMatcher<Response> {
                 mismatchDescription
                         .appendText("header ")
                         .appendValue(headerName)
-                        .appendText(" contained ")
+                        .appendText(" was ")
                         .appendValue(value);
                 return false;
             } else {

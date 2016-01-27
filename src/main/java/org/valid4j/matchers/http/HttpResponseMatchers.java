@@ -35,7 +35,7 @@ public class HttpResponseMatchers {
         return hasStatusCode(status.getStatusCode());
     }
 
-    public static Matcher<Response> hasStatusCode(final Matcher<? super Integer> statusCodeMatcher) {
+    public static Matcher<Response> hasStatusCode(final Matcher<Integer> statusCodeMatcher) {
         return new HasStatusCodeMatcher(statusCodeMatcher);
     }
 
@@ -59,7 +59,7 @@ public class HttpResponseMatchers {
         return hasContentType(equalTo(mediaType));
     }
 
-    public static Matcher<Response> hasContentType(final Matcher<? extends MediaType> mediaTypeMatcher) {
+    public static Matcher<Response> hasContentType(final Matcher<? super MediaType> mediaTypeMatcher) {
         return new HasContentTypeMatcher(mediaTypeMatcher);
     }
 
@@ -73,7 +73,7 @@ public class HttpResponseMatchers {
 
     public static Matcher<Response> hasHeader(
             final String headerName,
-            final Matcher<? extends Object> valueMatcher) {
+            final Matcher<?> valueMatcher) {
         return new HasHeaderWithValueMatcher(headerName, valueMatcher);
     }
 
@@ -95,7 +95,7 @@ public class HttpResponseMatchers {
         return new HasEntityWithValueMatcher(String.class, entityMatcher);
     }
 
-    public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? extends T> entityMatcher) {
+    public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? super T> entityMatcher) {
         return new HasEntityWithValueMatcher(entityClass, entityMatcher);
     }
 
@@ -107,19 +107,19 @@ public class HttpResponseMatchers {
         return ofLanguage(equalTo(locale));
     }
 
-    public static Matcher<Response> ofLanguage(final Matcher<? extends Locale> localeMatcher) {
+    public static Matcher<Response> ofLanguage(final Matcher<Locale> localeMatcher) {
         return new OfLanguageMatcher(localeMatcher);
     }
 
-    public static Matcher<Response> hasLastModifiedDate(final Matcher<? extends Date> lastModDateMatcher) {
+    public static Matcher<Response> hasLastModifiedDate(final Matcher<Date> lastModDateMatcher) {
         return new HasLastModifiedDate(lastModDateMatcher);
     }
 
-    public static Matcher<Response> hasContentLength(final Matcher<? super Integer> lengthMatcher) {
+    public static Matcher<Response> hasContentLength(final Matcher<Integer> lengthMatcher) {
         return new HasContentLengthMatcher(lengthMatcher);
     }
 
-    public static Matcher<Response> hasLocation(final Matcher<? extends URI> uriMatcher) {
+    public static Matcher<Response> hasLocation(final Matcher<URI> uriMatcher) {
         return new HasLocation(uriMatcher);
     }
 }

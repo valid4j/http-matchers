@@ -36,7 +36,7 @@ public class HttpResponseEntityMatchersTest {
         assertThat(hasEntity(String.class, equalTo("payload")),
                 isDescribedBy("has entity \"payload\""));
         assertThat(mismatchOf(response, hasEntity(String.class, equalTo("some-other"))),
-                equalTo("entity = \"payload\""));
+                equalTo("entity was \"payload\""));
     }
 
     @Test
@@ -48,8 +48,8 @@ public class HttpResponseEntityMatchersTest {
         Response response = client.target(service.getBaseUrl()).request().get();
         assertThat(response, hasContentLength(equalTo(23)));
         assertThat(hasContentLength(equalTo(7)),
-                isDescribedBy("has Content-Length <7>"));
+                isDescribedBy("has content length <7>"));
         assertThat(mismatchOf(response, hasContentLength(equalTo(0))),
-                equalTo("Content-Length was <23>"));
+                equalTo("content length was <23>"));
     }
 }

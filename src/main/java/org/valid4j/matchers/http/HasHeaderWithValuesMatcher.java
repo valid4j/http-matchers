@@ -26,7 +26,7 @@ class HasHeaderWithValuesMatcher extends TypeSafeDiagnosingMatcher<Response> {
                 mismatchDescription
                         .appendText("header ")
                         .appendValue(headerName)
-                        .appendText(" contained ")
+                        .appendText(" was ")
                         .appendValueList("", ",", "", values);
                 return false;
             } else {

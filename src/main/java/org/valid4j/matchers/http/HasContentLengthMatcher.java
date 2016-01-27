@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 
 class HasContentLengthMatcher extends FeatureMatcher<Response, Integer> {
     public HasContentLengthMatcher(Matcher<? super Integer> lengthMatcher) {
-        super(lengthMatcher, "has Content-Length", "Content-Length");
+        super(lengthMatcher, "has content length", "content length");
     }
 
     @Override

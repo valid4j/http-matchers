@@ -8,9 +8,9 @@ import javax.ws.rs.core.Response;
 
 public class HasEntityWithValueMatcher<T> extends TypeSafeMatcher<Response> {
     private final Class<T> entityClass;
-    private final Matcher<? extends T> entityMatcher;
+    private final Matcher<? super T> entityMatcher;
 
-    public HasEntityWithValueMatcher(Class<T> entityClass, Matcher<? extends T> entityMatcher) {
+    public HasEntityWithValueMatcher(Class<T> entityClass, Matcher<? super T> entityMatcher) {
         this.entityClass = entityClass;
         this.entityMatcher = entityMatcher;
     }
@@ -31,6 +31,6 @@ public class HasEntityWithValueMatcher<T> extends TypeSafeMatcher<Response> {
     protected void describeMismatchSafely(Response response, Description mismatchDescription) {
         response.bufferEntity();
         T entity = response.readEntity(entityClass);
-        mismatchDescription.appendText("entity = ").appendValue(entity);
+        mismatchDescription.appendText("entity was ").appendValue(entity);
     }
 }

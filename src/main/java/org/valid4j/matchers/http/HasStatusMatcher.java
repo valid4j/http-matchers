@@ -35,7 +35,7 @@ class HasStatusMatcher extends TypeSafeMatcher<Response> {
     @Override
     protected void describeMismatchSafely(Response response, Description mismatchDescription) {
         mismatchDescription
-                .appendText("was status ")
+                .appendText("status was ")
                 .appendValue(describe(response.getStatusInfo()));
     }
 

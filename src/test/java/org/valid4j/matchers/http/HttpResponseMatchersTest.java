@@ -35,7 +35,7 @@ public class HttpResponseMatchersTest {
         assertThat(hasStatusCode(400),
                 isDescribedBy("has status code <400>"));
         assertThat(mismatchOf(response(UNAUTHORIZED), hasStatusCode(400)),
-                equalTo("was status code <401>"));
+                equalTo("status code was <401>"));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class HttpResponseMatchersTest {
         assertThat(mismatchOf(
                         response(INTERNAL_SERVER_ERROR),
                         hasStatusCode(isOneOf(502, 503))),
-                equalTo("was status code <500>"));
+                equalTo("status code was <500>"));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class HttpResponseMatchersTest {
         assertThat(hasStatusCode(CLIENT_ERROR),
                 isDescribedBy("has status code of family <CLIENT_ERROR>"));
         assertThat(mismatchOf(response(BAD_GATEWAY), hasStatusCode(CLIENT_ERROR)),
-                equalTo("was status code <502>"));
+                equalTo("status code was <502>"));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class HttpResponseMatchersTest {
         assertThat(hasStatusCodeOf(okWithIgnoredReason),
                 isDescribedBy("has status code <200>"));
         assertThat(mismatchOf(response(BAD_REQUEST), hasStatusCodeOf(okWithIgnoredReason)),
-                equalTo("was status code <400>"));
+                equalTo("status code was <400>"));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class HttpResponseMatchersTest {
         assertThat(hasStatus(ACCEPTED),
                 isDescribedBy("has status <202 - Accepted>"));
         assertThat(mismatchOf(response(BAD_GATEWAY), hasStatus(ACCEPTED)),
-                equalTo("was status <502 - Bad Gateway>"));
+                equalTo("status was <502 - Bad Gateway>"));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class HttpResponseMatchersTest {
                 isDescribedBy("has content type <text/plain>"));
         Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
         assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
-                equalTo("was content type <application/json>"));
+                equalTo("content type was <application/json>"));
     }
 
     @Test
@@ -140,7 +140,7 @@ public class HttpResponseMatchersTest {
         assertThat(mismatchOf(response, hasHeader("some-other-key", equalTo("some-value"))),
                 equalTo("header \"some-other-key\" was missing"));
         assertThat(mismatchOf(response, hasHeader("some-key", equalTo("some-other-value"))),
-                equalTo("header \"some-key\" contained \"some-value\""));
+                equalTo("header \"some-key\" was \"some-value\""));
     }
 
     @Test
@@ -162,6 +162,8 @@ public class HttpResponseMatchersTest {
                 isDescribedBy("has header \"some-key\" with a collection containing \"some-value\""));
         assertThat(mismatchOf(response, hasHeaderValues("some-other-key", hasItem(equalTo("some-value")))),
                 equalTo("header \"some-other-key\" was missing"));
+        assertThat(mismatchOf(response, hasHeaderValues("some-key", hasItem(equalTo("some-other")))),
+                equalTo("header \"some-key\" was \"some-value\",\"some-value2\",\"some-value3\""));
     }
 
     @Test
@@ -176,9 +178,8 @@ public class HttpResponseMatchersTest {
         assertThat(response, not(hasCookie("cookie3")));
     }
 
-    // TODO:
     public void shouldMatchByCookieWithValue() {
-
+        // TODO:
     }
 
     @Test
@@ -210,7 +211,7 @@ public class HttpResponseMatchersTest {
         assertThat(ofLanguage("en-CA"),
                 isDescribedBy("of language <en_CA>"));
         assertThat(mismatchOf(response, ofLanguage("en-CA")),
-                equalTo("was language \"en-GB\""));
+                equalTo("language was <en_GB>"));
     }
 
     @Test
@@ -225,12 +226,12 @@ public class HttpResponseMatchersTest {
                 equalTo("last modified date was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 
-    // TODO:
     public void shouldMatchByHasLink() {
+        // TODO:
     }
 
-    // TODO:
     public void shouldMatchByLinkByRelation() {
+        // TODO:
     }
 
     @Test
@@ -239,10 +240,10 @@ public class HttpResponseMatchersTest {
         Response response = Response.created(location).build();
         assertThat(response, hasLocation(equalTo(location)));
         assertThat(hasLocation(equalTo(location)),
-                isDescribedBy("with Location: <http://example.com/loco>"));
+                isDescribedBy("has location <http://example.com/loco>"));
         URI mismatched = URI.create("http://mismatched.com");
         assertThat(mismatchOf(response, hasLocation(equalTo(mismatched))),
-                equalTo("Location: <http://example.com/loco>"));
+                equalTo("location was <http://example.com/loco>"));
     }
 
     private static Response response(StatusType status) {
