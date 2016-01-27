@@ -7,10 +7,10 @@ import org.hamcrest.TypeSafeMatcher;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 
-class WithLocation extends TypeSafeMatcher<Response> {
+class HasLocation extends TypeSafeMatcher<Response> {
     private final Matcher<? extends URI> uriMatcher;
 
-    public WithLocation(Matcher<? extends URI> uriMatcher) {
+    public HasLocation(Matcher<? extends URI> uriMatcher) {
         this.uriMatcher = uriMatcher;
     }
 

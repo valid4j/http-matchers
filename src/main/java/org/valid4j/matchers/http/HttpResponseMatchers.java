@@ -119,7 +119,7 @@ public class HttpResponseMatchers {
         return new HasContentLengthMatcher(lengthMatcher);
     }
 
-    public static Matcher<Response> withLocation(final Matcher<? extends URI> uriMatcher) {
-        return new WithLocation(uriMatcher);
+    public static Matcher<Response> hasLocation(final Matcher<? extends URI> uriMatcher) {
+        return new HasLocation(uriMatcher);
     }
 }

@@ -237,11 +237,11 @@ public class HttpResponseMatchersTest {
     public void shouldMatchByLocation() {
         URI location = URI.create("http://example.com/loco");
         Response response = Response.created(location).build();
-        assertThat(response, withLocation(equalTo(location)));
-        assertThat(withLocation(equalTo(location)),
+        assertThat(response, hasLocation(equalTo(location)));
+        assertThat(hasLocation(equalTo(location)),
                 isDescribedBy("with Location: <http://example.com/loco>"));
         URI mismatched = URI.create("http://mismatched.com");
-        assertThat(mismatchOf(response, withLocation(equalTo(mismatched))),
+        assertThat(mismatchOf(response, hasLocation(equalTo(mismatched))),
                 equalTo("Location: <http://example.com/loco>"));
     }
 
