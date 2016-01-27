@@ -8,7 +8,7 @@ import java.net.URI;
 
 class HasLocation extends FeatureMatcher<Response, URI> {
     public HasLocation(Matcher<? super URI> uriMatcher) {
-        super(uriMatcher, "has location", "location");
+        super(uriMatcher, "has Location", "Location");
     }
 
     @Override

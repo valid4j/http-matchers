@@ -9,7 +9,7 @@ import java.util.Locale;
 class OfLanguageMatcher extends FeatureMatcher<Response, Locale> {
 
     public OfLanguageMatcher(Matcher<? super Locale> localeMatcher) {
-        super(localeMatcher, "of language", "language");
+        super(localeMatcher, "of Content-Language", "Content-Language");
     }
 
     @Override

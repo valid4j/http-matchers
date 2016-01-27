@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 class HasContentTypeMatcher extends FeatureMatcher<Response, MediaType> {
 
     public HasContentTypeMatcher(Matcher<? super MediaType> mediaTypeMatcher) {
-        super(mediaTypeMatcher, "has content type", "content type");
+        super(mediaTypeMatcher, "has Content-Type", "Content-Type");
     }
 
     @Override

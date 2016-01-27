@@ -119,6 +119,10 @@ public class HttpResponseMatchers {
         return new HasContentLengthMatcher(lengthMatcher);
     }
 
+    public static Matcher<Response> hasLocation(final URI uri) {
+        return hasLocation(equalTo(uri));
+    }
+
     public static Matcher<Response> hasLocation(final Matcher<URI> uriMatcher) {
         return new HasLocation(uriMatcher);
     }

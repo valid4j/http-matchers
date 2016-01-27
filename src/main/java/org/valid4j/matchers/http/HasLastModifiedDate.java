@@ -8,7 +8,7 @@ import java.util.Date;
 
 class HasLastModifiedDate extends FeatureMatcher<Response, Date> {
     public HasLastModifiedDate(Matcher<? super Date> lastModDateMatcher) {
-        super(lastModDateMatcher, "has last modified date", "last modified date");
+        super(lastModDateMatcher, "has Last-Modified", "Last-Modified");
     }
 
     @Override

@@ -105,10 +105,10 @@ public class HttpResponseMatchersTest {
         assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
         assertThat(response, not(hasContentType(APPLICATION_JSON)));
         assertThat(hasContentType(TEXT_PLAIN_TYPE),
-                isDescribedBy("has content type <text/plain>"));
+                isDescribedBy("has Content-Type <text/plain>"));
         Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
         assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
-                equalTo("content type was <application/json>"));
+                equalTo("Content-Type was <application/json>"));
     }
 
     @Test
@@ -149,15 +149,26 @@ public class HttpResponseMatchersTest {
         headers.add("some-key", "some-value");
         headers.add("some-key", "some-value2");
         headers.add("some-key", "some-value3");
-        headers.add("some-key2", 42);
+        headers.add("Cache-Control", "no-cache");
+        headers.add("Cache-Control", "no-store");
+        headers.add("Age", 42);
         Response response = Response.ok().replaceAll(headers).build();
-        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value"))));
-        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value2"))));
-        assertThat(response, hasHeaderValues("some-key", hasItem(equalTo("some-value3"))));
-        assertThat(response, hasHeaderValues("some-key2", hasItem(equalTo(42))));
-        assertThat(response, not(hasHeaderValues("some-key", hasItem(equalTo("some-other-value")))));
-        assertThat(response, not(hasHeaderValues("some-key2", hasItem(equalTo(53)))));
-        assertThat(response, not(hasHeaderValues("some-key3", hasItem(equalTo(0)))));
+        assertThat(response, hasHeaderValues("some-key",
+                hasItem(equalTo("some-value"))));
+        assertThat(response, hasHeaderValues("some-key",
+                hasItem(equalTo("some-value2"))));
+        assertThat(response, hasHeaderValues("some-key",
+                hasItem(equalTo("some-value3"))));
+        assertThat(response, hasHeaderValues("Cache-Control",
+                contains(equalTo("no-cache"), equalTo("no-store"))));
+        assertThat(response, hasHeaderValues("Age",
+                hasItem(equalTo(42))));
+        assertThat(response, not(hasHeaderValues("some-key",
+                hasItem(equalTo("some-other-value")))));
+        assertThat(response, not(hasHeaderValues("Age",
+                hasItem(equalTo(53)))));
+        assertThat(response, not(hasHeaderValues("some-key3",
+                hasItem(equalTo(0)))));
         assertThat(hasHeaderValues("some-key", hasItem(equalTo("some-value"))),
                 isDescribedBy("has header \"some-key\" with a collection containing \"some-value\""));
         assertThat(mismatchOf(response, hasHeaderValues("some-other-key", hasItem(equalTo("some-value")))),
@@ -209,9 +220,9 @@ public class HttpResponseMatchersTest {
         assertThat(response, not(ofLanguage(Locale.US)));
         assertThat(response, not(ofLanguage(equalTo(Locale.US))));
         assertThat(ofLanguage("en-CA"),
-                isDescribedBy("of language <en_CA>"));
+                isDescribedBy("of Content-Language <en_CA>"));
         assertThat(mismatchOf(response, ofLanguage("en-CA")),
-                equalTo("language was <en_GB>"));
+                equalTo("Content-Language was <en_GB>"));
     }
 
     @Test
@@ -221,9 +232,9 @@ public class HttpResponseMatchersTest {
         Response response = Response.ok().lastModified(lastModDate).build();
         assertThat(response, hasLastModifiedDate(equalTo(lastModDate)));
         assertThat(hasLastModifiedDate(equalTo(lastModDate)),
-                isDescribedBy("has last modified date <Sat Jan 16 17:03:14 CET 2016>"));
+                isDescribedBy("has Last-Modified <Sat Jan 16 17:03:14 CET 2016>"));
         assertThat(mismatchOf(response, hasLastModifiedDate(equalTo(new Date(0L)))),
-                equalTo("last modified date was <Sat Jan 16 17:03:14 CET 2016>"));
+                equalTo("Last-Modified was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 
     public void shouldMatchByHasLink() {
@@ -238,12 +249,13 @@ public class HttpResponseMatchersTest {
     public void shouldMatchByLocation() {
         URI location = URI.create("http://example.com/loco");
         Response response = Response.created(location).build();
+        assertThat(response, hasLocation(location));
         assertThat(response, hasLocation(equalTo(location)));
         assertThat(hasLocation(equalTo(location)),
-                isDescribedBy("has location <http://example.com/loco>"));
+                isDescribedBy("has Location <http://example.com/loco>"));
         URI mismatched = URI.create("http://mismatched.com");
         assertThat(mismatchOf(response, hasLocation(equalTo(mismatched))),
-                equalTo("location was <http://example.com/loco>"));
+                equalTo("Location was <http://example.com/loco>"));
     }
 
     private static Response response(StatusType status) {

@@ -48,8 +48,8 @@ public class HttpResponseEntityMatchersTest {
         Response response = client.target(service.getBaseUrl()).request().get();
         assertThat(response, hasContentLength(equalTo(23)));
         assertThat(hasContentLength(equalTo(7)),
-                isDescribedBy("has content length <7>"));
+                isDescribedBy("has Content-Length <7>"));
         assertThat(mismatchOf(response, hasContentLength(equalTo(0))),
-                equalTo("content length was <23>"));
+                equalTo("Content-Length was <23>"));
     }
 }
