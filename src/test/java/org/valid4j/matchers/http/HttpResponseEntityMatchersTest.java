@@ -34,9 +34,9 @@ public class HttpResponseEntityMatchersTest {
         assertThat(response, hasEntity(String.class, equalTo("payload")));
         assertThat(response, hasEntity(equalTo("payload")));
         assertThat(hasEntity(String.class, equalTo("payload")),
-                isDescribedBy("has entity \"payload\""));
-        assertThat(mismatchOf(response, hasEntity(String.class, equalTo("some-other"))),
-                equalTo("entity was \"payload\""));
+            isDescribedBy("has Entity \"payload\""));
+      assertThat(mismatchOf(response, hasEntity(equalTo("some-other"))),
+          equalTo("Entity was \"payload\""));
     }
 
     @Test
