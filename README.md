@@ -77,8 +77,11 @@ Example usage:
     URI location = URI.create("http://example.com/123");
     assertThat(response, hasLocation(equalTo(location)));
 
-    // Verify cookie existence, and other cookie properties
+    // Verify cookie existence
     assertThat(response, hasCookie("my-cookie"));
+
+    // ...or other cookie properties
+    import static org.valid4j.matchers.http.NewCookieMatchers.*;
     assertThat(response, hasCookie("my-cookie", allOf(
         withCookieValue("..."),
         withCookiePath("/cookie/path"),
