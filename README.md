@@ -42,10 +42,13 @@ Example usage:
     assertThat(response, hasStatus(Status.OK));
     assertThat(response, hasStatus(400, "Bad Request");
     
-    // Verify content type of response
+    // Verify representation metadata of the response
     assertThat(response, hasContentType(MediaType.APPLICATION_JSON_TYPE));
     assertThat(response, hasContentType(compatibleWith(MediaType.APPLICATION_JSON_TYPE)));
-    
+    assertThat(response, hasContentEncoding("gzip"));
+    assertThat(response, hasContentLocation(URI.create("http://example.com/123")));
+    assertThat(response, hasContentLength(lessThan(2345)));
+
     // Verify headers of response (by-existence, by-value, by-iterable)
     assertThat(response, hasHeader("Expires"));
     assertThat(response, hasHeader("Content-Encoding", equalTo("gzip")));
@@ -64,10 +67,7 @@ Example usage:
     // E.g
     assertThat(response, hasEntity(String.class, equalTo("...")));
     assertThat(response, hasEntity(MyBody.class, myBodyMatcher)));
-    
-    // Verify content length of response
-    assertThat(response, hasContentLength(lessThan(2345)));
-    
+
     // Verify language of response
     assertThat(response, ofLanguage("en-GB"));
     assertThat(response, ofLanguage(Locale.UK));

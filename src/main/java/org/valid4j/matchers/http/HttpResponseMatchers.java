@@ -2,6 +2,7 @@ package org.valid4j.matchers.http;
 
 import org.hamcrest.Matcher;
 
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
@@ -51,22 +52,6 @@ public class HttpResponseMatchers {
         return new OfFamilyMatcher(family);
     }
 
-    public static Matcher<Response> hasContentType(final String mediaType) {
-        return hasContentType(MediaType.valueOf(mediaType));
-    }
-
-    public static Matcher<Response> hasContentType(final MediaType mediaType) {
-        return hasContentType(equalTo(mediaType));
-    }
-
-    public static Matcher<Response> hasContentType(final Matcher<? super MediaType> mediaTypeMatcher) {
-        return new HasContentTypeMatcher(mediaTypeMatcher);
-    }
-
-    public static Matcher<MediaType> compatibleWith(final MediaType compatibleMediaType) {
-        return new MediaTypeCompatibleWithMatcher(compatibleMediaType);
-    }
-
     public static Matcher<Response> hasHeader(final String headerName) {
         return new HasHeaderMatcher(headerName);
     }
@@ -97,6 +82,34 @@ public class HttpResponseMatchers {
 
     public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? super T> entityMatcher) {
         return new HasEntityWithValueMatcher(entityClass, entityMatcher);
+    }
+
+    public static Matcher<Response> hasContentType(final String mediaType) {
+        return hasContentType(MediaType.valueOf(mediaType));
+    }
+
+    public static Matcher<Response> hasContentType(final MediaType mediaType) {
+        return hasContentType(equalTo(mediaType));
+    }
+
+    public static Matcher<Response> hasContentType(final Matcher<? super MediaType> mediaTypeMatcher) {
+        return new HasContentTypeMatcher(mediaTypeMatcher);
+    }
+
+    public static Matcher<MediaType> compatibleWith(final MediaType compatibleMediaType) {
+        return new MediaTypeCompatibleWithMatcher(compatibleMediaType);
+    }
+
+    public static Matcher<Response> hasContentEncoding(final String encoding) {
+        return new HasHeaderWithValueMatcher(HttpHeaders.CONTENT_ENCODING, equalTo(encoding));
+    }
+
+    public static Matcher<Response> hasContentLocation(final URI uri) {
+        return hasContentLocation(equalTo(uri));
+    }
+
+    public static Matcher<Response> hasContentLocation(final Matcher<URI> uriMatcher) {
+        return new HasHeaderWithValueMatcher(HttpHeaders.CONTENT_LOCATION, uriMatcher);
     }
 
     public static Matcher<Response> ofLanguage(final String languageTag) {

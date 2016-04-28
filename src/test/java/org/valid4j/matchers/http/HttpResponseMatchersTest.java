@@ -97,21 +97,6 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByContentType() {
-        Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
-        assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
-        assertThat(response, hasContentType(TEXT_PLAIN));
-        assertThat(response, hasContentType(compatibleWith(TEXT_WILDCARD)));
-        assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
-        assertThat(response, not(hasContentType(APPLICATION_JSON)));
-        assertThat(hasContentType(TEXT_PLAIN_TYPE),
-                isDescribedBy("has Content-Type <text/plain>"));
-        Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
-        assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
-                equalTo("Content-Type was <application/json>"));
-    }
-
-    @Test
     public void shouldMatchByHeader() {
         Response response = Response.ok().header("some-key", "some-value").build();
         assertThat(response, hasHeader("some-key"));
@@ -194,20 +179,42 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHasEntity() {
-        Response response = Response.ok("entity").build();
-        assertThat(response, hasEntity());
-        assertThat(hasEntity(), isDescribedBy("has entity"));
-        assertThat(mismatchOf(response, hasEntity()),
-                equalTo("has entity"));
+    public void shouldMatchByContentType() {
+        Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
+        assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
+        assertThat(response, hasContentType(TEXT_PLAIN));
+        assertThat(response, hasContentType(compatibleWith(TEXT_WILDCARD)));
+        assertThat(response, not(hasContentType(APPLICATION_JSON_TYPE)));
+        assertThat(response, not(hasContentType(APPLICATION_JSON)));
+        assertThat(hasContentType(TEXT_PLAIN_TYPE),
+                isDescribedBy("has Content-Type <text/plain>"));
+        Response jsonResponse = Response.ok("content", APPLICATION_JSON_TYPE).build();
+        assertThat(mismatchOf(jsonResponse, hasContentType(TEXT_PLAIN_TYPE)),
+                equalTo("Content-Type was <application/json>"));
     }
 
     @Test
-    public void shouldMatchByHasNoEntity() {
-        Response response = Response.noContent().build();
-        assertThat(response, not(hasEntity()));
-        assertThat(mismatchOf(response, hasEntity()),
-                equalTo("has no entity"));
+    public void shouldMatchByContentEncoding() {
+        Response response = Response.ok("content").encoding("gzip").build();
+        assertThat(response, hasContentEncoding("gzip"));
+        assertThat(response, not(hasContentEncoding("deflate")));
+        assertThat(hasContentEncoding("gzip"),
+                isDescribedBy("has header \"Content-Encoding\" with value \"gzip\""));
+        assertThat(mismatchOf(response, hasContentEncoding("deflate")),
+                equalTo("header \"Content-Encoding\" was \"gzip\""));
+    }
+
+    @Test
+    public void shouldMatchByContentLocation() {
+        URI location = URI.create("http://example.com/loco");
+        URI other = URI.create("http://example.com/poco");
+        Response response = Response.ok().contentLocation(location).build();
+        assertThat(response, hasContentLocation(location));
+        assertThat(response, not(hasContentLocation(other)));
+        assertThat(hasContentLocation(location),
+                isDescribedBy("has header \"Content-Location\" with value <http://example.com/loco>"));
+        assertThat(mismatchOf(response, hasContentLocation(other)),
+                equalTo("header \"Content-Location\" was <http://example.com/loco>"));
     }
 
     @Test
@@ -256,6 +263,23 @@ public class HttpResponseMatchersTest {
         URI mismatched = URI.create("http://mismatched.com");
         assertThat(mismatchOf(response, hasLocation(equalTo(mismatched))),
                 equalTo("Location was <http://example.com/loco>"));
+    }
+
+    @Test
+    public void shouldMatchByHasEntity() {
+        Response response = Response.ok("entity").build();
+        assertThat(response, hasEntity());
+        assertThat(hasEntity(), isDescribedBy("has entity"));
+        assertThat(mismatchOf(response, hasEntity()),
+                equalTo("has entity"));
+    }
+
+    @Test
+    public void shouldMatchByHasNoEntity() {
+        Response response = Response.noContent().build();
+        assertThat(response, not(hasEntity()));
+        assertThat(mismatchOf(response, hasEntity()),
+                equalTo("has no entity"));
     }
 
     private static Response response(StatusType status) {
