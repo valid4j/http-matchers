@@ -16,8 +16,8 @@ public class NewCookieMatchers {
         throw new AssertionError("Prevent instantiation");
     }
 
-    public static Matcher<NewCookie> hasCookieName(final String name) {
-        return new FeatureMatcher<NewCookie, String>(equalTo(name), "has cookie name", "cookie name") {
+    public static Matcher<NewCookie> withCookieName(final String name) {
+        return new FeatureMatcher<NewCookie, String>(equalTo(name), "with cookie name", "cookie name") {
             @Override
             protected String featureValueOf(NewCookie actual) {
                 return actual.getName();
@@ -25,8 +25,8 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieValue(final String value) {
-        return new FeatureMatcher<NewCookie, String>(equalTo(value), "has cookie value", "cookie value") {
+    public static Matcher<NewCookie> withCookieValue(final String value) {
+        return new FeatureMatcher<NewCookie, String>(equalTo(value), "with cookie value", "cookie value") {
             @Override
             protected String featureValueOf(NewCookie actual) {
                 return actual.getValue();
@@ -34,8 +34,8 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookiePath(final Matcher<String> pathMatcher) {
-        return new FeatureMatcher<NewCookie, String>(pathMatcher, "has cookie path", "cookie path") {
+    public static Matcher<NewCookie> withCookiePath(final Matcher<String> pathMatcher) {
+        return new FeatureMatcher<NewCookie, String>(pathMatcher, "with cookie path", "cookie path") {
             @Override
             protected String featureValueOf(NewCookie actual) {
                 return actual.getPath();
@@ -43,12 +43,12 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieDomain(final String domain) {
-        return hasCookieDomain(equalTo(domain));
+    public static Matcher<NewCookie> withCookieDomain(final String domain) {
+        return withCookieDomain(equalTo(domain));
     }
 
-    public static Matcher<NewCookie> hasCookieDomain(final Matcher<String> domainMatcher) {
-        return new FeatureMatcher<NewCookie, String>(domainMatcher, "has cookie domain", "cookie domain") {
+    public static Matcher<NewCookie> withCookieDomain(final Matcher<String> domainMatcher) {
+        return new FeatureMatcher<NewCookie, String>(domainMatcher, "with cookie domain", "cookie domain") {
             @Override
             protected String featureValueOf(NewCookie actual) {
                 return actual.getDomain();
@@ -56,12 +56,12 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieVersion(final int version) {
-        return hasCookieVersion(equalTo(version));
+    public static Matcher<NewCookie> withCookieVersion(final int version) {
+        return withCookieVersion(equalTo(version));
     }
 
-    public static Matcher<NewCookie> hasCookieVersion(Matcher<Integer> versionMatcher) {
-        return new FeatureMatcher<NewCookie, Integer>(versionMatcher, "has cookie version", "cookie version") {
+    public static Matcher<NewCookie> withCookieVersion(Matcher<Integer> versionMatcher) {
+        return new FeatureMatcher<NewCookie, Integer>(versionMatcher, "with cookie version", "cookie version") {
             @Override
             protected Integer featureValueOf(NewCookie actual) {
                 return actual.getVersion();
@@ -69,8 +69,8 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieComment(Matcher<String> commentMatcher) {
-        return new FeatureMatcher<NewCookie, String>(commentMatcher, "has cookie comment", "cookie comment") {
+    public static Matcher<NewCookie> withCookieComment(Matcher<String> commentMatcher) {
+        return new FeatureMatcher<NewCookie, String>(commentMatcher, "with cookie comment", "cookie comment") {
             @Override
             protected String featureValueOf(NewCookie actual) {
                 return actual.getComment();
@@ -78,8 +78,8 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieMaxAge(Matcher<Integer> ageMatcher) {
-        return new FeatureMatcher<NewCookie, Integer>(ageMatcher, "has cookie max age", "cookie max age") {
+    public static Matcher<NewCookie> withCookieMaxAge(Matcher<Integer> ageMatcher) {
+        return new FeatureMatcher<NewCookie, Integer>(ageMatcher, "with cookie max age", "cookie max age") {
             @Override
             protected Integer featureValueOf(NewCookie actual) {
                 return actual.getMaxAge();
@@ -87,8 +87,8 @@ public class NewCookieMatchers {
         };
     }
 
-    public static Matcher<NewCookie> hasCookieExpiryDate(Matcher<Date> expiryMatcher) {
-        return new FeatureMatcher<NewCookie, Date>(expiryMatcher, "has cookie expiry date", "cookie expiry date") {
+    public static Matcher<NewCookie> withCookieExpiryDate(Matcher<Date> expiryMatcher) {
+        return new FeatureMatcher<NewCookie, Date>(expiryMatcher, "with cookie expiry date", "cookie expiry date") {
             @Override
             protected Date featureValueOf(NewCookie actual) {
                 return actual.getExpiry();

@@ -37,77 +37,77 @@ public class NewCookieMatchersTest {
 
     @Test
     public void shouldMatchOnName() {
-        assertThat(cookie, hasCookieName("cookie-name"));
-        assertThat(cookie, not(hasCookieName("another-name")));
-        assertThat(hasCookieName("cookie-name"),
-                isDescribedBy("has cookie name \"cookie-name\""));
+        assertThat(cookie, withCookieName("cookie-name"));
+        assertThat(cookie, not(withCookieName("another-name")));
+        assertThat(withCookieName("cookie-name"),
+                isDescribedBy("with cookie name \"cookie-name\""));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnValue() {
-        assertThat(cookie, hasCookieValue("cookie-value"));
-        assertThat(cookie, not(hasCookieValue("another-value")));
-        assertThat(hasCookieValue("cookie-value"),
-                isDescribedBy("has cookie value \"cookie-value\""));
+        assertThat(cookie, withCookieValue("cookie-value"));
+        assertThat(cookie, not(withCookieValue("another-value")));
+        assertThat(withCookieValue("cookie-value"),
+                isDescribedBy("with cookie value \"cookie-value\""));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnPath() {
-        assertThat(cookie, hasCookiePath(startsWith("/")));
-        assertThat(cookie, not(hasCookiePath(endsWith("/"))));
-        assertThat(hasCookiePath(startsWith("/")),
-                isDescribedBy("has cookie path a string starting with \"/\""));
+        assertThat(cookie, withCookiePath(startsWith("/")));
+        assertThat(cookie, not(withCookiePath(endsWith("/"))));
+        assertThat(withCookiePath(startsWith("/")),
+                isDescribedBy("with cookie path a string starting with \"/\""));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnDomain() {
-        assertThat(cookie, hasCookieDomain("example.org"));
-        assertThat(cookie, hasCookieDomain(endsWith(".org")));
-        assertThat(cookie, not(hasCookieDomain(endsWith(".com"))));
-        assertThat(hasCookieDomain(endsWith(".org")),
-                isDescribedBy("has cookie domain a string ending with \".org\""));
+        assertThat(cookie, withCookieDomain("example.org"));
+        assertThat(cookie, withCookieDomain(endsWith(".org")));
+        assertThat(cookie, not(withCookieDomain(endsWith(".com"))));
+        assertThat(withCookieDomain(endsWith(".org")),
+                isDescribedBy("with cookie domain a string ending with \".org\""));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnVersion() {
-        assertThat(cookie, hasCookieVersion(VERSION));
-        assertThat(cookie, hasCookieVersion(greaterThan(2)));
-        assertThat(cookie, not(hasCookieVersion(lessThan(2))));
-        assertThat(hasCookieVersion(VERSION),
-                isDescribedBy("has cookie version <3>"));
+        assertThat(cookie, withCookieVersion(VERSION));
+        assertThat(cookie, withCookieVersion(greaterThan(2)));
+        assertThat(cookie, not(withCookieVersion(lessThan(2))));
+        assertThat(withCookieVersion(VERSION),
+                isDescribedBy("with cookie version <3>"));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnComment() {
-        assertThat(cookie, hasCookieComment(containsString("is a comment")));
-        assertThat(cookie, not(hasCookieComment(equalTo("hi there"))));
-        assertThat(hasCookieComment(startsWith("This")),
-                isDescribedBy("has cookie comment a string starting with \"This\""));
+        assertThat(cookie, withCookieComment(containsString("is a comment")));
+        assertThat(cookie, not(withCookieComment(equalTo("hi there"))));
+        assertThat(withCookieComment(startsWith("This")),
+                isDescribedBy("with cookie comment a string starting with \"This\""));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnMaxAge() {
-        assertThat(cookie, hasCookieMaxAge(lessThan(300)));
-        assertThat(cookie, not(hasCookieMaxAge(lessThan(200))));
-        assertThat(hasCookieMaxAge(lessThan(200)),
-                isDescribedBy("has cookie max age a value less than <200>"));
+        assertThat(cookie, withCookieMaxAge(lessThan(300)));
+        assertThat(cookie, not(withCookieMaxAge(lessThan(200))));
+        assertThat(withCookieMaxAge(lessThan(200)),
+                isDescribedBy("with cookie max age a value less than <200>"));
         // TODO: Verify mismatch description
     }
 
     @Test
     public void shouldMatchOnExpiryDate() {
-        assertThat(cookie, hasCookieExpiryDate(equalTo(EXPIRY_DATE)));
+        assertThat(cookie, withCookieExpiryDate(equalTo(EXPIRY_DATE)));
 
         Date expiryDate = new Date(1461852318000L);
-        assertThat(cookie, not(hasCookieExpiryDate(equalTo(expiryDate))));
-        assertThat(hasCookieExpiryDate(equalTo(expiryDate)),
-                isDescribedBy("has cookie expiry date <Thu Apr 28 16:05:18 CEST 2016>"));
+        assertThat(cookie, not(withCookieExpiryDate(equalTo(expiryDate))));
+        assertThat(withCookieExpiryDate(equalTo(expiryDate)),
+                isDescribedBy("with cookie expiry date <Thu Apr 28 16:05:18 CEST 2016>"));
         // TODO: Verify mismatch description
     }
 

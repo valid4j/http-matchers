@@ -77,6 +77,18 @@ Example usage:
     URI location = URI.create("http://example.com/123");
     assertThat(response, hasLocation(equalTo(location)));
 
+    // Verify cookie existence, and other cookie properties
+    assertThat(response, hasCookie("my-cookie"));
+    assertThat(response, hasCookie("my-cookie", allOf(
+        withCookieValue("..."),
+        withCookiePath("/cookie/path"),
+        withCookieDomain("example.org"),
+        withCookieVersion(greaterThan(2)),
+        withCookieMaxAge(lessThan(600)),
+        isCookieSecure(),
+        not(isCookieHttpOnly())
+    )));
+
     ...
     
 ## Project license

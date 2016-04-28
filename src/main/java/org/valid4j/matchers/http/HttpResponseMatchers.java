@@ -4,6 +4,7 @@ import org.hamcrest.Matcher;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
@@ -70,6 +71,10 @@ public class HttpResponseMatchers {
 
     public static Matcher<Response> hasCookie(final String cookieName) {
         return new HasCookieMatcher(cookieName);
+    }
+
+    public static Matcher<Response> hasCookie(final String cookieName, final Matcher<NewCookie> cookieMatcher) {
+        return new HasCookieWithValueMatcher(cookieName, cookieMatcher);
     }
 
     public static Matcher<Response> hasEntity() {

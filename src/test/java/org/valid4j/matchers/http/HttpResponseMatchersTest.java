@@ -16,6 +16,7 @@ import static javax.ws.rs.core.Response.Status.Family.CLIENT_ERROR;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.valid4j.matchers.http.HttpResponseMatchers.*;
+import static org.valid4j.matchers.http.NewCookieMatchers.withCookieValue;
 import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
@@ -172,10 +173,22 @@ public class HttpResponseMatchersTest {
         assertThat(response, hasCookie("cookie1"));
         assertThat(response, hasCookie("cookie2"));
         assertThat(response, not(hasCookie("cookie3")));
+        assertThat(hasCookie("cookie1"),
+                isDescribedBy("has cookie \"cookie1\""));
+        // TODO: Verify mismatch description
     }
 
+    @Test
     public void shouldMatchByCookieWithValue() {
-        // TODO:
+        Response response = Response.ok().cookie(
+                new NewCookie("cookie1", "my-value"),
+                new NewCookie("cookie2", "my-other-value")).build();
+        assertThat(response, hasCookie("cookie1", withCookieValue("my-value")));
+        assertThat(response, not(hasCookie("cookie1", withCookieValue("OHASONEFN"))));
+        assertThat(response, not(hasCookie("cookie3", withCookieValue("my-value"))));
+        assertThat(hasCookie("cookie1", withCookieValue("my-value")),
+                isDescribedBy("has cookie \"cookie1\" with cookie value \"my-value\""));
+        // TODO: Verify mismatch description
     }
 
     @Test
