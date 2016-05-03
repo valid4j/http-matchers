@@ -24,8 +24,7 @@ can be downloaded from here, but is usually bundled with the client implementati
 
 ## Usage guide
 
-Invoke your web service using plain JAX-RS. E.g:
-
+    // Invoke your web service using plain JAX-RS. E.g:
     Client client = ClientBuilder.newClient();
     Response response = client.target("http://example.org/hello").request("text/plain").get();
     
@@ -74,11 +73,10 @@ Invoke your web service using plain JAX-RS. E.g:
     assertThat(response, hasEntity());
 
     // Verify the message body content (aka entity) of the response
-    // NOTE: This will buffer the entity so make sure to close the response
+    // NOTE: This will buffer the entity so make sure to close the response afterwards
     assertThat(response, hasEntity(equalTo("content")));
     
-    // Map the body to a specific Java type (using a MessageBodyReader)
-    // E.g
+    // Map the body to a specific Java type (using a MessageBodyReader). E.g:
     assertThat(response, hasEntity(String.class, equalTo("...")));
     assertThat(response, hasEntity(MyBody.class, myBodyMatcher)));
 
