@@ -76,9 +76,20 @@ can be downloaded from here, but is usually bundled with the client implementati
     // NOTE: This will buffer the entity so make sure to close the response afterwards
     assertThat(response, hasEntity(equalTo("content")));
     
-    // Map the body to a specific Java type (using a MessageBodyReader). E.g:
+    // Map the body to a specific Java type (using a MessageBodyReader) before matching. E.g:
     assertThat(response, hasEntity(String.class, equalTo("...")));
     assertThat(response, hasEntity(MyBody.class, myBodyMatcher)));
+
+For example, in order to verify a regular JSON payload, you could combine the matchers from
+[com.jayway.jsonpath:json-path-assert](https://github.com/jayway/JsonPath/tree/master/json-path-assert) in this way:
+
+    assertThat(response, hasEntity(String.class, hasJsonPath("$.path.to.attribute", equalTo("value"))));
+
+Or you could "cheat" a bit and parse the entity as a GenericType, and match on that:
+
+    assertThat(response, hasEntity(
+         new GenericType<Map<String, String>>() {},
+         allOf(hasEntry("key1", "value1"), hasEntry("key2", "value2"))));
 
 #### Verify cookies of response
 
