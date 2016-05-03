@@ -24,15 +24,16 @@ can be downloaded from here, but is usually bundled with the client implementati
 
 ## Usage guide
 
-Example usage:
+Invoke your web service using plain JAX-RS. E.g:
 
-    // Statically import the library entry point:
-    import static org.valid4j.matchers.http.HttpResponseMatchers.*;
-    
-    // Invoke your web service using plain JAX-RS. E.g:
     Client client = ClientBuilder.newClient();
     Response response = client.target("http://example.org/hello").request("text/plain").get();
     
+    // Statically import the library entry point:
+    import static org.valid4j.matchers.http.HttpResponseMatchers.*;
+
+#### Verify status of response
+
     // Verify the status code of response
     assertThat(response, hasStatusCode(Family.SUCCESSFUL));
     assertThat(response, hasStatusCode(200));
@@ -41,7 +42,16 @@ Example usage:
     // Verify status code and reason of response
     assertThat(response, hasStatus(Status.OK));
     assertThat(response, hasStatus(400, "Bad Request");
-    
+
+#### Verify headers of response
+
+    // Verify headers of response (by-existence, by-value, by-iterable)
+    assertThat(response, hasHeader(HttpHeaders.EXPIRES));
+    assertThat(response, hasHeader("Content-Encoding", equalTo("gzip")));
+    assertThat(response, hasHeader("Age", equalTo(42)));
+    assertThat(response, hasHeaderValues(HttpHeaders.CACHE_CONTROL,
+                contains(equalTo("no-cache"), equalTo("no-store"))));
+
     // Verify representation metadata of the response
     assertThat(response, hasContentType(MediaType.APPLICATION_JSON_TYPE));
     assertThat(response, hasContentType(compatibleWith(MediaType.APPLICATION_JSON_TYPE)));
@@ -49,12 +59,16 @@ Example usage:
     assertThat(response, hasContentLocation(URI.create("http://example.com/123")));
     assertThat(response, hasContentLength(lessThan(2345)));
 
-    // Verify headers of response (by-existence, by-value, by-iterable)
-    assertThat(response, hasHeader("Expires"));
-    assertThat(response, hasHeader("Content-Encoding", equalTo("gzip")));
-    assertThat(response, hasHeader("Age", equalTo(42)));
-    assertThat(response, hasHeaderValues("Cache-Control",
-                contains(equalTo("no-cache"), equalTo("no-store"))));
+    // Verify language of response
+    assertThat(response, ofLanguage("en-GB"));
+    assertThat(response, ofLanguage(Locale.UK));
+    assertThat(response, ofLanguage(equalTo(Locale.UK)));
+
+    // Verify location of the response
+    URI location = URI.create("http://example.com/123");
+    assertThat(response, hasLocation(equalTo(location)));
+
+#### Verify message body (a.k.a entity) of response
 
     // Verify the existence of a message body in the response
     assertThat(response, hasEntity());
@@ -68,14 +82,7 @@ Example usage:
     assertThat(response, hasEntity(String.class, equalTo("...")));
     assertThat(response, hasEntity(MyBody.class, myBodyMatcher)));
 
-    // Verify language of response
-    assertThat(response, ofLanguage("en-GB"));
-    assertThat(response, ofLanguage(Locale.UK));
-    assertThat(response, ofLanguage(equalTo(Locale.UK)));
-
-    // Verify location of the response
-    URI location = URI.create("http://example.com/123");
-    assertThat(response, hasLocation(equalTo(location)));
+#### Verify cookies of response
 
     // Verify cookie existence
     assertThat(response, hasCookie("my-cookie"));
