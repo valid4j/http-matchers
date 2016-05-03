@@ -2,10 +2,7 @@ package org.valid4j.matchers.http;
 
 import org.hamcrest.Matcher;
 
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
 import java.net.URI;
@@ -87,6 +84,10 @@ public class HttpResponseMatchers {
 
     public static <T> Matcher<Response> hasEntity(Class<T> entityClass, Matcher<? super T> entityMatcher) {
         return new HasEntityWithValueMatcher(entityClass, entityMatcher);
+    }
+
+    public static <T> Matcher<Response> hasEntity(GenericType<T> entityType, Matcher<? super T> entityMatcher) {
+        return new HasGenericEntityWithValueMatcher(entityType, entityMatcher);
     }
 
     public static Matcher<Response> hasContentType(final String mediaType) {
