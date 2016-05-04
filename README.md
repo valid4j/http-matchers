@@ -85,6 +85,9 @@ For example, in order to verify a regular JSON payload, you could combine the ma
 
     assertThat(response, hasEntity(String.class, hasJsonPath("$.path.to.attribute", equalTo("value"))));
 
+    // Or use an alternative syntax...
+    assertThat(response, hasEntity(isJsonString(withJsonPath("$.path.to.attribute", equalTo("value")))));
+
 Or you could "cheat" a bit and parse the entity as a GenericType, and match on that:
 
     assertThat(response, hasEntity(
