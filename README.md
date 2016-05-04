@@ -10,7 +10,7 @@ Add this dependency to your `pom.xml`
     <dependency>
 	    <groupId>org.valid4j</groupId>
 	    <artifactId>http-matchers</artifactId>
-	    <version>1.0</version>
+	    <version>1.1</version>
     </dependency>
 
 The [JAX-RS client API (javax.ws.rs.client)](https://docs.oracle.com/javaee/7/api/index.html?javax/ws/rs/client/package-summary.html)
