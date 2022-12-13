@@ -3,7 +3,7 @@ package org.valid4j.matchers.http;
 import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.net.URI;
 
 class HasLocation extends FeatureMatcher<Response, URI> {

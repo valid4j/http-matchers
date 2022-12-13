@@ -1,28 +1,30 @@
 package org.valid4j.matchers.http;
 
-import io.dropwizard.testing.junit.DropwizardClientRule;
-import org.junit.ClassRule;
-import org.junit.Test;
+import io.dropwizard.testing.junit5.DropwizardClientExtension;
+import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
+import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.Test;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.valid4j.matchers.http.HttpResponseMatchers.hasContentLength;
 import static org.valid4j.matchers.http.HttpResponseMatchers.hasEntity;
 import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
-public class HttpResponseEntityMatchersTest {
+@ExtendWith(DropwizardExtensionsSupport.class)
+class HttpResponseEntityMatchersTest {
 
     @Path("text")
     @Produces(MediaType.TEXT_PLAIN)
@@ -45,15 +47,14 @@ public class HttpResponseEntityMatchersTest {
         }
     }
 
-    @ClassRule
-    public final static DropwizardClientRule server = new DropwizardClientRule(
+    public final static DropwizardClientExtension server = new DropwizardClientExtension(
             new TextPayloadResource(),
             new JsonPayloadResource());
 
     public final Client client = ClientBuilder.newClient();
 
     @Test
-    public void shouldMatchByEntityWithStringValue() {
+    void shouldMatchByEntityWithStringValue() {
         Response response = client.target(server.baseUri()).path("text").request().get();
         assertThat(response, hasEntity(String.class, equalTo("some-content-as-payload")));
         assertThat(response, hasEntity(equalTo("some-content-as-payload")));
@@ -64,7 +65,7 @@ public class HttpResponseEntityMatchersTest {
     }
 
     @Test
-    public void shouldMatchByGenericEntityWithStringValues() {
+    void shouldMatchByGenericEntityWithStringValues() {
         Response response = client.target(server.baseUri()).path("json").request().get();
         assertThat(response, hasEntity(
                 new GenericType<Map<String, String>>() {
@@ -73,7 +74,7 @@ public class HttpResponseEntityMatchersTest {
     }
 
     @Test
-    public void shouldMatchByContentLength() {
+    void shouldMatchByContentLength() {
         Response response = client.target(server.baseUri()).path("text").request().get();
         assertThat(response, hasContentLength(equalTo(23)));
         assertThat(hasContentLength(equalTo(7)),

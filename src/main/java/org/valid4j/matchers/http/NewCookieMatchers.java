@@ -5,7 +5,7 @@ import org.hamcrest.FeatureMatcher;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.NewCookie;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.equalTo;

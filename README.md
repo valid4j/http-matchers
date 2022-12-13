@@ -10,16 +10,17 @@ Add this dependency to your `pom.xml`
     <dependency>
 	    <groupId>org.valid4j</groupId>
 	    <artifactId>http-matchers</artifactId>
-	    <version>1.1</version>
+	    <version>2.0</version>
     </dependency>
 
 The [JAX-RS client API (javax.ws.rs.client)](https://docs.oracle.com/javaee/7/api/index.html?javax/ws/rs/client/package-summary.html)
 can be downloaded from here, but is usually bundled with the client implementation you are using, e.g Jersey.
 
+
     <dependency>
-	    <groupId>javax.ws.rs</groupId>
-	    <artifactId>javax.ws.rs-api</artifactId>
-	    <version>2.0.1</version>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>3.1.0</version>
     </dependency>
 
 ## Usage guide

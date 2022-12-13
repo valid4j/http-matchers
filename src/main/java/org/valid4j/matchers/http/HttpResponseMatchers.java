@@ -2,9 +2,9 @@ package org.valid4j.matchers.http;
 
 import org.hamcrest.Matcher;
 
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status.Family;
-import javax.ws.rs.core.Response.StatusType;
+import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.Response.Status.Family;
+import jakarta.ws.rs.core.Response.StatusType;
 import java.net.URI;
 import java.util.Date;
 import java.util.Locale;

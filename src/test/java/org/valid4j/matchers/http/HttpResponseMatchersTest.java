@@ -1,37 +1,37 @@
 package org.valid4j.matchers.http;
 
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import org.junit.jupiter.api.Test;
 import org.valid4j.matchers.http.helpers.HttpStatus;
 
-import javax.ws.rs.core.*;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.Response.StatusType;
+import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Response.StatusType;
 import java.net.URI;
 import java.util.Date;
 import java.util.Locale;
 
-import static javax.ws.rs.core.MediaType.*;
-import static javax.ws.rs.core.Response.Status.*;
-import static javax.ws.rs.core.Response.Status.Family.CLIENT_ERROR;
+import static jakarta.ws.rs.core.MediaType.*;
+import static jakarta.ws.rs.core.Response.Status.*;
+import static jakarta.ws.rs.core.Response.Status.Family.CLIENT_ERROR;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 import static org.valid4j.matchers.http.HttpResponseMatchers.*;
 import static org.valid4j.matchers.http.NewCookieMatchers.withCookieValue;
 import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
-public class HttpResponseMatchersTest {
+class HttpResponseMatchersTest {
     private static final MediaType TEXT_WILDCARD = new MediaType("text", MEDIA_TYPE_WILDCARD);
 
     @Test
-    public void shouldMatchOkResponse() {
+    void shouldMatchOkResponse() {
         Response ok = Response.ok().build();
         assertThat(ok, isResponseOk());
         assertThat(isResponseOk(), isDescribedBy("is response ok"));
     }
 
     @Test
-    public void shouldMatchByStatusCode() {
+    void shouldMatchByStatusCode() {
         assertThat(response(BAD_REQUEST), hasStatusCode(400));
         assertThat(hasStatusCode(400),
                 isDescribedBy("has status code <400>"));
@@ -40,19 +40,19 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByStatusCodeMatcher() {
+    void shouldMatchByStatusCodeMatcher() {
         Response response = response(BAD_GATEWAY);
-        assertThat(response, hasStatusCode(isOneOf(502, 503)));
-        assertThat(hasStatusCode(isOneOf(502, 503)),
+        assertThat(response, hasStatusCode(oneOf(502, 503)));
+        assertThat(hasStatusCode(oneOf(502, 503)),
                 isDescribedBy("has status code one of {<502>, <503>}"));
         assertThat(mismatchOf(
                         response(INTERNAL_SERVER_ERROR),
-                        hasStatusCode(isOneOf(502, 503))),
+                        hasStatusCode(oneOf(502, 503))),
                 equalTo("status code was <500>"));
     }
 
     @Test
-    public void shouldMatchByStatusCodeOfFamily() {
+    void shouldMatchByStatusCodeOfFamily() {
         Response response = response(UNAUTHORIZED);
         assertThat(response, hasStatusCode(ofFamily(CLIENT_ERROR)));
         assertThat(response, hasStatusCode(CLIENT_ERROR));
@@ -65,7 +65,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByStatusCodeOfStatus() {
+    void shouldMatchByStatusCodeOfStatus() {
         Response response = response(Status.OK);
         HttpStatus okWithIgnoredReason = new HttpStatus(200, "Ignored Reason");
         assertThat(response, hasStatusCodeOf(okWithIgnoredReason));
@@ -76,7 +76,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByStatusCodeAndReason() {
+    void shouldMatchByStatusCodeAndReason() {
         Response response = response(ACCEPTED);
         assertThat(response, hasStatus(ACCEPTED));
         assertThat(response, hasStatus(202, "Accepted"));
@@ -87,7 +87,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldNotMatchByStatusCodeAndReason() {
+    void shouldNotMatchByStatusCodeAndReason() {
         Response response = response(OK);
         assertThat(response, not(hasStatus(200, "Mismatched Reason")));
         assertThat(response, not(hasStatus(new HttpStatus(200, "Mismatched Reason"))));
@@ -98,7 +98,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHeader() {
+    void shouldMatchByHeader() {
         Response response = Response.ok().header("some-key", "some-value").build();
         assertThat(response, hasHeader("some-key"));
         assertThat(response, not(hasHeader("some-other-key")));
@@ -109,7 +109,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHeaderWithValue() {
+    void shouldMatchByHeaderWithValue() {
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
         headers.add("some-key", "some-value");
         headers.add("some-key", "some-value2");
@@ -130,7 +130,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHeaderWithValues() {
+    void shouldMatchByHeaderWithValues() {
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<String, Object>();
         headers.add("some-key", "some-value");
         headers.add("some-key", "some-value2");
@@ -164,12 +164,12 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByCookie() {
+    void shouldMatchByCookie() {
         Response response = Response.ok().cookie(
-                new NewCookie("cookie1", "my-value"),
-                new NewCookie("cookie1", "my-other-value"),
-                new NewCookie("cookie1", "my-yet-another-value"),
-                new NewCookie("cookie2", "my-value-2")).build();
+                new NewCookie.Builder("cookie1").value("my-value").build(),
+            new NewCookie.Builder("cookie1").value("my-other-value").build(),
+            new NewCookie.Builder("cookie1").value("my-yet-another-value").build(),
+            new NewCookie.Builder("cookie2").value("my-value-2").build()).build();
         assertThat(response, hasCookie("cookie1"));
         assertThat(response, hasCookie("cookie2"));
         assertThat(response, not(hasCookie("cookie3")));
@@ -179,10 +179,10 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByCookieWithValue() {
+    void shouldMatchByCookieWithValue() {
         Response response = Response.ok().cookie(
-                new NewCookie("cookie1", "my-value"),
-                new NewCookie("cookie2", "my-other-value")).build();
+                new NewCookie.Builder("cookie1").value("my-value").build(),
+                new NewCookie.Builder("cookie2").value("my-other-value").build()).build();
         assertThat(response, hasCookie("cookie1", withCookieValue("my-value")));
         assertThat(response, not(hasCookie("cookie1", withCookieValue("OHASONEFN"))));
         assertThat(response, not(hasCookie("cookie3", withCookieValue("my-value"))));
@@ -192,7 +192,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByContentType() {
+    void shouldMatchByContentType() {
         Response response = Response.ok("content", TEXT_PLAIN_TYPE).build();
         assertThat(response, hasContentType(TEXT_PLAIN_TYPE));
         assertThat(response, hasContentType(TEXT_PLAIN));
@@ -207,7 +207,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByContentEncoding() {
+    void shouldMatchByContentEncoding() {
         Response response = Response.ok("content").encoding("gzip").build();
         assertThat(response, hasContentEncoding("gzip"));
         assertThat(response, not(hasContentEncoding("deflate")));
@@ -218,7 +218,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByContentLocation() {
+    void shouldMatchByContentLocation() {
         URI location = URI.create("http://example.com/loco");
         URI other = URI.create("http://example.com/poco");
         Response response = Response.ok().contentLocation(location).build();
@@ -231,7 +231,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByLanguage() {
+    void shouldMatchByLanguage() {
         Response response = Response.ok("message").language(Locale.UK).build();
         assertThat(response, ofLanguage("en-GB"));
         assertThat(response, ofLanguage(Locale.UK));
@@ -246,7 +246,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByLastModified() {
+    void shouldMatchByLastModified() {
         final long lastModMillis = 1452960194707L;
         Date lastModDate = new Date(lastModMillis);
         Response response = Response.ok().lastModified(lastModDate).build();
@@ -257,16 +257,16 @@ public class HttpResponseMatchersTest {
                 equalTo("Last-Modified was <Sat Jan 16 17:03:14 CET 2016>"));
     }
 
-    public void shouldMatchByHasLink() {
+    void shouldMatchByHasLink() {
         // TODO:
     }
 
-    public void shouldMatchByLinkByRelation() {
+    void shouldMatchByLinkByRelation() {
         // TODO:
     }
 
     @Test
-    public void shouldMatchByLocation() {
+    void shouldMatchByLocation() {
         URI location = URI.create("http://example.com/loco");
         Response response = Response.created(location).build();
         assertThat(response, hasLocation(location));
@@ -279,7 +279,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHasEntity() {
+    void shouldMatchByHasEntity() {
         Response response = Response.ok("entity").build();
         assertThat(response, hasEntity());
         assertThat(hasEntity(), isDescribedBy("has entity"));
@@ -288,7 +288,7 @@ public class HttpResponseMatchersTest {
     }
 
     @Test
-    public void shouldMatchByHasNoEntity() {
+    void shouldMatchByHasNoEntity() {
         Response response = Response.noContent().build();
         assertThat(response, not(hasEntity()));
         assertThat(mismatchOf(response, hasEntity()),

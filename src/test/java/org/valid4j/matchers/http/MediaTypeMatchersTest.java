@@ -1,24 +1,24 @@
 package org.valid4j.matchers.http;
 
-import org.junit.Test;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
-import static javax.ws.rs.core.MediaType.*;
+import static jakarta.ws.rs.core.MediaType.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 import static org.valid4j.matchers.http.HttpResponseMatchers.compatibleWith;
 import static org.valid4j.matchers.http.helpers.MatcherHelpers.mismatchOf;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
-public class MediaTypeMatchersTest {
+class MediaTypeMatchersTest {
     private static final MediaType IMAGE_WILDCARD = new MediaType("image", "*");
     private static final MediaType IMAGE_JPEG = new MediaType("image", "jpeg");
     private static final MediaType IMAGE_PNG = new MediaType("image", "png");
 
     @Test
-    public void shouldMatchCompatibleMediaType() {
+    void shouldMatchCompatibleMediaType() {
         assertThat(WILDCARD_TYPE, compatibleWith(IMAGE_JPEG));
         assertThat(IMAGE_WILDCARD, compatibleWith(IMAGE_JPEG));
         assertThat(IMAGE_WILDCARD, compatibleWith(IMAGE_PNG));
@@ -36,7 +36,7 @@ public class MediaTypeMatchersTest {
     }
 
     @Test
-    public void shouldNotMatchIncompatibleMediaType() {
+    void shouldNotMatchIncompatibleMediaType() {
         assertThat(IMAGE_PNG, not(compatibleWith(IMAGE_JPEG)));
         assertThat(IMAGE_JPEG, not(compatibleWith(IMAGE_PNG)));
         assertThat(APPLICATION_JSON_TYPE, not(compatibleWith(APPLICATION_XML_TYPE)));
