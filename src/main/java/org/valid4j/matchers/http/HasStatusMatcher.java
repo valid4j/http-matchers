@@ -3,7 +3,7 @@ package org.valid4j.matchers.http;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import java.util.Objects;
 
 class HasStatusMatcher extends TypeSafeMatcher<Response> {

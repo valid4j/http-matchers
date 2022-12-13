@@ -3,7 +3,7 @@ package org.valid4j.matchers.http;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 class MediaTypeCompatibleWithMatcher extends TypeSafeMatcher<MediaType> {
     private final MediaType compatibleMediaType;

@@ -1,9 +1,9 @@
 package org.valid4j.matchers.http.helpers;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 /**
- * Implementation class of a {@link javax.ws.rs.core.Response.StatusType}
+ * Implementation class of a {@link jakarta.ws.rs.core.Response.StatusType}
  */
 public class HttpStatus implements Response.StatusType {
 

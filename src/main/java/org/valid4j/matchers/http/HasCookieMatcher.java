@@ -3,8 +3,8 @@ package org.valid4j.matchers.http;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.Response;
 import java.util.Map;
 
 class HasCookieMatcher extends TypeSafeMatcher<Response> {

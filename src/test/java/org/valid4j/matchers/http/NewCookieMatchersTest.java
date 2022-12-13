@@ -1,21 +1,21 @@
 package org.valid4j.matchers.http;
 
-import org.junit.Test;
 
-import javax.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.NewCookie;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 import static org.valid4j.matchers.http.NewCookieMatchers.*;
 import static org.valid4j.matchers.http.helpers.MatcherMatchers.isDescribedBy;
 
-public class NewCookieMatchersTest {
+class NewCookieMatchersTest {
 
     private static final int VERSION = 3;
     private static final int AGE = 256;
@@ -23,20 +23,19 @@ public class NewCookieMatchersTest {
     private static final boolean IS_SECURE = true;
     private static final boolean HTTP_ONLY = false;
 
-    private final NewCookie cookie = new NewCookie(
-            "cookie-name",
-            "cookie-value",
-            "/path",
-            "example.org",
-            VERSION,
-            "This is a comment",
-            AGE,
-            EXPIRY_DATE,
-            IS_SECURE,
-            HTTP_ONLY);
+    private final NewCookie cookie = new NewCookie.Builder("cookie-name")
+        .value("cookie-value")
+        .path("/path")
+        .domain("example.org")
+        .version(VERSION)
+        .comment("This is a comment")
+        .maxAge(AGE)
+        .expiry(EXPIRY_DATE)
+        .secure(IS_SECURE)
+        .httpOnly(HTTP_ONLY).build();
 
     @Test
-    public void shouldMatchOnName() {
+    void shouldMatchOnName() {
         assertThat(cookie, withCookieName("cookie-name"));
         assertThat(cookie, not(withCookieName("another-name")));
         assertThat(withCookieName("cookie-name"),
@@ -45,7 +44,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnValue() {
+    void shouldMatchOnValue() {
         assertThat(cookie, withCookieValue("cookie-value"));
         assertThat(cookie, not(withCookieValue("another-value")));
         assertThat(withCookieValue("cookie-value"),
@@ -54,7 +53,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnPath() {
+    void shouldMatchOnPath() {
         assertThat(cookie, withCookiePath(startsWith("/")));
         assertThat(cookie, not(withCookiePath(endsWith("/"))));
         assertThat(withCookiePath(startsWith("/")),
@@ -63,7 +62,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnDomain() {
+    void shouldMatchOnDomain() {
         assertThat(cookie, withCookieDomain("example.org"));
         assertThat(cookie, withCookieDomain(endsWith(".org")));
         assertThat(cookie, not(withCookieDomain(endsWith(".com"))));
@@ -73,7 +72,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnVersion() {
+    void shouldMatchOnVersion() {
         assertThat(cookie, withCookieVersion(VERSION));
         assertThat(cookie, withCookieVersion(greaterThan(2)));
         assertThat(cookie, not(withCookieVersion(lessThan(2))));
@@ -83,7 +82,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnComment() {
+    void shouldMatchOnComment() {
         assertThat(cookie, withCookieComment(containsString("is a comment")));
         assertThat(cookie, not(withCookieComment(equalTo("hi there"))));
         assertThat(withCookieComment(startsWith("This")),
@@ -92,7 +91,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnMaxAge() {
+    void shouldMatchOnMaxAge() {
         assertThat(cookie, withCookieMaxAge(lessThan(300)));
         assertThat(cookie, not(withCookieMaxAge(lessThan(200))));
         assertThat(withCookieMaxAge(lessThan(200)),
@@ -101,7 +100,7 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnExpiryDate() {
+    void shouldMatchOnExpiryDate() {
         assertThat(cookie, withCookieExpiryDate(equalTo(EXPIRY_DATE)));
 
         Date expiryDate = new Date(1461852318000L);
@@ -112,10 +111,16 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnSecureFlag() {
+    void shouldMatchOnSecureFlag() {
         assertThat(cookie, isCookieSecure());
 
-        NewCookie nonSecureCookie = new NewCookie("name", "value", "path", "domain", "comment", AGE, false);
+        NewCookie nonSecureCookie = new NewCookie.Builder("name")
+            .value("value")
+            .path("path")
+            .domain("domain")
+            .comment( "comment")
+            .maxAge(AGE)
+            .secure(false).build();
         assertThat(nonSecureCookie, not(isCookieSecure()));
 
         assertThat(isCookieSecure(),
@@ -124,10 +129,17 @@ public class NewCookieMatchersTest {
     }
 
     @Test
-    public void shouldMatchOnHttpOnlyFlag() {
+    void shouldMatchOnHttpOnlyFlag() {
         assertThat(cookie, not(isCookieHttpOnly()));
 
-        NewCookie httpOnlyCookie = new NewCookie("name", "value", "path", "domain", "comment", AGE, false, true);
+        NewCookie httpOnlyCookie = new NewCookie.Builder("name")
+            .value("value")
+            .path("path")
+            .domain("domain")
+            .comment( "comment")
+            .maxAge(AGE)
+            .secure(false)
+            .httpOnly(true).build();
         assertThat(httpOnlyCookie, isCookieHttpOnly());
 
         assertThat(isCookieHttpOnly(),
